@@ -1,23 +1,31 @@
-import parser from 'body-parser'
+import parser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
-
 import { directories, port } from './shared/configuration.js'
+
 
 const server = express()
 
 server.use(express.static(directories.public))
 
 server.use(cors({}))
-server.use(parser.json())
-server.use(parser.urlencoded({ extended: true }))
+server.use(parser())
+server.use(express.json())
+server.use(express.urlencoded({ extended: true }))
 
-server.get('/user', async function (request, response) {
+const api = express.Router()
+const oauth = express.Router()
+
+api.get('/user', async function (request, response) {
   response.json({
     name: 'John Doe',
     email: 'john@example.com',
   })
 })
+
+
+server.use('/api/v1', api)
+server.use('/oauth', oauth)
 
 server.listen(port, function () {
   console.log(`Server is running on port ${port}`)
