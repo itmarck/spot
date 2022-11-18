@@ -3,10 +3,12 @@ import cors from 'cors'
 import express from 'express'
 import { directories, port } from './shared/configuration.js'
 
-
 const server = express()
 
 server.use(express.static(directories.public))
+
+server.set('views', directories.pages)
+server.set('view engine', 'pug')
 
 server.use(cors({}))
 server.use(parser())

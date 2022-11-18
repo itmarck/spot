@@ -1,0 +1,23 @@
+html(lang='en')
+  head
+    title Login to Spot
+    link(rel='icon', href='/favicon.svg')
+    link(rel='stylesheet', href='/assets/base.css')
+  body
+    h1 Spot
+    p Welcome to #{token}
+    p client id: #{client}
+    p redirect uri: #{redirect}
+
+    if token 
+      p You have been invited to join Spot by #{token}
+    else 
+      form(action='/login' method='post')
+        div
+          label(for='username') Username:
+          input(type='text' name='username' id='username')
+        div
+          label(for='password') Password:
+          input(type='password' name='password' id='password')
+        div
+          input(type='submit' value='Submit')
