@@ -1,23 +1,102 @@
-import parser from 'body-parser'
+import parser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
+import { directories, port } from './shared/configuration.js'
+import { sendMail } from './shared/mail.js'
 
-import { port } from './shared/configuration.js'
+const server = express()
 
-const app = express()
+server.use(express.static(directories.public))
 
-app.use(cors({}))
-app.use(parser.json())
-app.use(parser.urlencoded({ extended: true }))
+server.set('views', directories.pages)
+server.set('view engine', 'pug')
 
-app.get('/', async function (request, response) {
-  response.json({ message: 'Welcome to the API!' })
+server.use(cors({}))
+server.use(parser())
+server.use(express.json())
+server.use(express.urlencoded({ extended: true }))
+
+const api = express.Router()
+const oauth = express.Router()
+const internal = express.Router()
+
+const testClient = {
+  id: 'test',
+  secret: '123456',
+  code: '1234',
+  token: 'KDx2HG5K71',
+}
+
+server.post('/email', async function (request, response) {
+  const { body = {} } = request
+  const { email } = body
+
+  if (!email) {
+    response.status(400).send('Missing email')
+    return
+  }
+
+  try {
+    await sendMail(email, {
+      subject: 'Código de inicio de sesión',
+      message: testClient.code,
+    })
+    response.status(200).send('OK')
+  } catch {
+    response.status(500).send('Error sending email')
+    return
+  }
 })
 
-app.get('/user', async function (request, response) {
-  response.json({ message: 'Hi, I am a user!' })
+api.get('/user', async function (request, response) {
+  const { headers } = request
+  const authorization = headers['authorization'] || ' '
+  const [type, value] = authorization.split(' ')
+
+  if (value !== testClient.token) {
+    response.status(401).send(`${type} Unauthorized`)
+    return
+  }
+
+  response.json({
+    name: 'John Doe',
+    email: 'john@example.com',
+  })
 })
 
-app.listen(port, function () {
+oauth.get('/authorize', function ({ query, cookies }, response) {
+  response.render('authorize', {
+    client: query['client_id'],
+    secret: query['client_secret'],
+    redirect: query['redirect_uri'],
+    scope: query['scope'],
+    state: query['state'],
+    token: cookies['access_token'],
+    responseType: query['response_type'],
+  })
+})
+
+oauth.post('/token', function (request, response) {
+  const { body } = request
+  const { grant_type, code, client_id } = body
+
+  response.json({
+    token_type: 'Bearer',
+    access_token: testClient.token,
+  })
+})
+
+internal.post('/login', function (request, response) {
+  const { query, body } = request
+  const { redirect } = query
+
+  response.redirect(301, `${redirect}?code=${testClient.code}`)
+})
+
+server.use('/api/v1', api)
+server.use('/oauth', oauth)
+server.use('/_', internal)
+
+server.listen(port, function () {
   console.log(`Server is running on port ${port}`)
 })
