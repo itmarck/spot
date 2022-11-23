@@ -11,13 +11,13 @@ html(lang='en')
 
     if token 
       p You have been invited to join Spot by #{token}
-    else 
-      form(action='/login' method='post')
+    else
+      form(method='post' action=`/_/login?redirect=${redirect}`)
         div
-          label(for='username') Username:
-          input(type='text' name='username' id='username')
+          label(for='email') Email:
+          input(type='text' name='email')
         div
           label(for='password') Password:
-          input(type='password' name='password' id='password')
+          input(type='password' name='password')
         div
           input(type='submit' value='Submit')
