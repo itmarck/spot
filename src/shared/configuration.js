@@ -31,3 +31,10 @@ export const database = {
     idle: 10000,
   },
 }
+
+export const mail = {
+  host: process.env.MAILHOST,
+  port: process.env.MAILPORT,
+  user: process.env.MAILUSER,
+  password: process.env.MAILPASSWORD,
+}

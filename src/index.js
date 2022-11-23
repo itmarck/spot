@@ -2,6 +2,7 @@ import parser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
 import { directories, port } from './shared/configuration.js'
+import { sendMail } from './shared/mail.js'
 
 const server = express()
 
@@ -25,6 +26,27 @@ const testClient = {
   code: '1234',
   token: 'KDx2HG5K71',
 }
+
+server.post('/email', async function (request, response) {
+  const { body = {} } = request
+  const { email } = body
+
+  if (!email) {
+    response.status(400).send('Missing email')
+    return
+  }
+
+  try {
+    await sendMail(email, {
+      subject: 'Código de inicio de sesión',
+      message: testClient.code,
+    })
+    response.status(200).send('OK')
+  } catch {
+    response.status(500).send('Error sending email')
+    return
+  }
+})
 
 api.get('/user', async function (request, response) {
   const { headers } = request
