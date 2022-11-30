@@ -2,22 +2,22 @@ html(lang='en')
   head
     title Login to Spot
     link(rel='icon', href='/favicon.svg')
-    link(rel='stylesheet', href='/assets/base.css')
+    link(rel='stylesheet', href='/static/base.css')
   body
     h1 Spot
     p Welcome to #{token}
     p client id: #{client}
     p redirect uri: #{redirect}
 
-    if token 
+    if token
       p You have been invited to join Spot by #{token}
     else
       form(method='post' action=`/_/login?redirect=${redirect}`)
         div
-          label(for='email') Email:
+          label(for='email') Email
           input(type='text' name='email')
         div
-          label(for='password') Password:
-          input(type='password' name='password')
+          label(for='code') Access code
+          input(type='code' name='code')
         div
           input(type='submit' value='Submit')
