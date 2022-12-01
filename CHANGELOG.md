@@ -1,3 +1,9 @@
+## 0.1.2 (Dic 01, 2022)
+
+- Setup JWT with basic flow
+- OAuth flow from database data
+- Add nodemon for development
+
 ## 0.1.1 (Nov 23, 2022)
 
 - Email setup
