@@ -8,8 +8,8 @@ const base = dirname(dirname(dirname(fileURLToPath(import.meta.url))))
 
 export const directories = {
   base: base,
-  pages: join(base, 'src/pages'),
   public: join(base, 'public'),
+  templates: join(base, 'src/templates'),
 }
 
 export const server = {
