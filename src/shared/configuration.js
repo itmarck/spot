@@ -38,3 +38,7 @@ export const mail = {
   user: process.env.MAILUSER,
   password: process.env.MAILPASSWORD,
 }
+
+export const jwt = {
+  secret: process.env.JWT_SECRET,
+}

@@ -1,5 +1,7 @@
 import cors from 'cors'
 import { Router } from 'express'
+import { CONTEXTS } from '../shared/constants.js'
+import { sign } from '../shared/jwt.js'
 
 const oauth = Router()
 
@@ -19,11 +21,11 @@ oauth.get('/authorize', function ({ query, cookies }, response) {
 
 oauth.post('/token', function (request, response) {
   const { body } = request
-  const { grant_type, code, client_id } = body
+  const { client_id } = body
 
   response.json({
     token_type: 'Bearer',
-    access_token: 'KDx2HG5K71',
+    access_token: sign(CONTEXTS.api, { client_id }),
   })
 })
 
