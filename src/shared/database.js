@@ -12,13 +12,24 @@ const options = {
 
 const pool = createPool(options)
 
-export async function execute(sql) {
+export async function execute(sql, { as } = {}) {
   return new Promise(function (resolve, reject) {
-    pool.query(sql, function (error, result) {
+    pool.query(sql, function (error, rows = []) {
       if (error) {
-        reject(error)
-      } else {
-        resolve(result)
+        return reject(error)
+      }
+
+      if (rows.length === 0) {
+        return resolve()
+      }
+
+      switch (as) {
+        case 'array':
+          return resolve(Array.from(rows))
+        case 'object':
+          return resolve(rows[0])
+        default:
+          return resolve(rows)
       }
     })
   })

@@ -1,5 +1,6 @@
 import cors from 'cors'
 import { Router } from 'express'
+import { getUser } from '../data/user.js'
 import { CONTEXTS } from '../shared/constants.js'
 import { verify } from '../shared/jwt.js'
 
@@ -9,7 +10,7 @@ api.use(cors())
 
 function analyzeTokenFor(value) {
   return function (request, response, next) {
-    const { headers: { authorization = '' } = {} } = request
+    const authorization = request.get('authorization') || ''
     const formatted = authorization.startsWith('Bearer ')
     const token = formatted && authorization.substring(7)
     const payload = token && verify(token)
@@ -31,14 +32,15 @@ function analyzeTokenFor(value) {
 api.use(analyzeTokenFor(CONTEXTS.api))
 
 api.get('/user', async function (request, response) {
-  const { payload } = request
+  const { payload: { uid } = {} } = request
+  const user = await getUser(uid)
 
-  console.log(payload)
+  if (!user) {
+    response.status(404).send()
+    return
+  }
 
-  response.json({
-    name: 'John Doe',
-    email: 'john@example.com',
-  })
+  response.json(user)
 })
 
 export default api
