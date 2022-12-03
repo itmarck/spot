@@ -1,4 +1,9 @@
 export const CONTEXTS = {
-  api: 'api',
   internal: 'internal',
+  api: 'api',
+}
+
+export const SESSIONS = {
+  web: 1,
+  oauth: 2,
 }

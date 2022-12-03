@@ -1,7 +1,9 @@
 import cors from 'cors'
 import { Router } from 'express'
-import { CONTEXTS } from '../shared/constants.js'
+import { getSession } from '../data/session.js'
+import { CONTEXTS, SESSIONS } from '../shared/constants.js'
 import { sign } from '../shared/jwt.js'
+import { isExpired } from '../shared/time.js'
 
 const oauth = Router()
 
@@ -19,13 +21,36 @@ oauth.get('/authorize', function ({ query, cookies }, response) {
   })
 })
 
-oauth.post('/token', function (request, response) {
-  const { body } = request
-  const { client_id } = body
+function parseBody(body = {}) {
+  return {
+    type: body['type'],
+    code: body['code'],
+    clientId: body['client_id'],
+    clientSecret: body['client_secret'],
+  }
+}
+
+oauth.post('/token', async function ({ body }, response) {
+  const { clientId, code } = parseBody(body)
+  const session = await getSession({ type: SESSIONS.oauth, code })
+  const userId = session && session.userId
+  const createdAt = session && session.createdAt
+  const payload = clientId && userId && { uid: userId, aid: 1 }
+  const hasExpired = createdAt && isExpired(createdAt)
+  const hasAccess = session && payload && !hasExpired
+  const accessToken = hasAccess && sign(CONTEXTS.api, payload)
+
+  // TODO: Validate client id and client secret.
+
+  if (!hasAccess) {
+    return response.status(401).send({
+      message: 'Invalid or expired code.',
+    })
+  }
 
   response.json({
     token_type: 'Bearer',
-    access_token: sign(CONTEXTS.api, { client_id }),
+    access_token: accessToken,
   })
 })
 

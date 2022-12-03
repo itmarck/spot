@@ -10,7 +10,7 @@ import { CONTEXTS } from './constants.js'
  */
 export function sign(context, payload) {
   if (!Object.values(CONTEXTS).includes(context)) {
-    throw new Error('Invalid context')
+    throw new Error(`Invalid context: ${context}`)
   }
   return jsonwebtoken.sign({ context, ...payload }, jwt.secret)
 }

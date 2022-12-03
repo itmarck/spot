@@ -1,46 +1,71 @@
 import cors from 'cors'
 import { Router } from 'express'
+import { deleteRecord, getRecords, setRecord } from '../data/record.js'
 import { getUser } from '../data/user.js'
+import { analyzeContext } from '../middlewares/token.js'
 import { CONTEXTS } from '../shared/constants.js'
-import { verify } from '../shared/jwt.js'
 
 const api = Router()
 
 api.use(cors())
-
-function analyzeTokenFor(value) {
-  return function (request, response, next) {
-    const authorization = request.get('authorization') || ''
-    const formatted = authorization.startsWith('Bearer ')
-    const token = formatted && authorization.substring(7)
-    const payload = token && verify(token)
-    const context = payload && payload.context
-
-    if (context !== value) {
-      response.status(401).send()
-      return
-    }
-
-    if (payload) {
-      request.payload = payload
-    }
-
-    next()
-  }
-}
-
-api.use(analyzeTokenFor(CONTEXTS.api))
+api.use(analyzeContext(CONTEXTS.api))
 
 api.get('/user', async function (request, response) {
   const { payload: { uid } = {} } = request
   const user = await getUser(uid)
 
   if (!user) {
-    response.status(404).send()
-    return
+    return response.status(404).send()
   }
 
   response.json(user)
+})
+
+api.get('/user/records', async function (request, response) {
+  const { payload: { uid, aid } = {} } = request
+  const records = await getRecords(uid, aid)
+
+  if (!records) {
+    return response.status(404).send()
+  }
+
+  response.json(records)
+})
+
+api.get('/user/records/:name', async function (request, response) {
+  const { params: { name } = {}, payload } = request
+  const { uid, aid } = payload
+  const record = await getRecords(uid, aid, { name })
+
+  if (!record) {
+    return response.status(404).send()
+  }
+
+  response.json(record)
+})
+
+api.post('/user/records/:name', async function (request, response) {
+  const { params: { name } = {}, body = {}, payload } = request
+  const { uid, aid } = payload
+  const { value } = body
+
+  await setRecord(uid, aid, { name, value })
+
+  response.json({ name, value })
+})
+
+api.delete('/user/records/:name', async function (request, response) {
+  const { params: { name } = {}, payload } = request
+  const { uid, aid } = payload
+  const record = await getRecords(uid, aid, { name })
+
+  if (!record) {
+    return response.status(404).send()
+  }
+
+  await deleteRecord(uid, aid, { name })
+
+  response.json({ name })
 })
 
 export default api
