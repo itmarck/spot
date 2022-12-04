@@ -1,5 +1,6 @@
 export const CONTEXTS = {
   internal: 'internal',
+  secret: 'secret',
   api: 'api',
 }
 
