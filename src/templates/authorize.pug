@@ -1,23 +1,36 @@
-html(lang='en')
-  head
-    title Login to Spot
-    link(rel='icon', href='/favicon.svg')
-    link(rel='stylesheet', href='/static/base.css')
-  body
-    h1 Spot
-    p Welcome to #{token}
-    p client id: #{client}
-    p redirect uri: #{redirect}
+extends layout.pug
 
-    if token
-      p You have been invited to join Spot by #{token}
-    else
-      form(method='post' action=`/_/login?redirect=${redirect}`)
-        div
-          label(for='email') Email
-          input(type='text' name='email')
-        div
-          label(for='code') Access code
-          input(type='code' name='code')
-        div
-          input(type='submit' value='Submit')
+block styles
+  link(rel='stylesheet' href='/static/form.css')
+
+block body
+  main
+    header
+      h1 Spot
+    p 
+      span 
+        span
+          a(href='/') App 
+        span de User
+      br
+      span quiere acceder a tu cuenta de Spot
+    form(method='post' action=`/_/login?redirect=${redirect}`)
+      div(type='column' align='left')
+        span Datos de tu cuenta
+        span(name='secondary') Correo, nombre y foto (solo lectura)
+      div(type='column' align='left')
+        span Almacenamiento
+        span(name='secondary') Acceso a tu almacenamiento de Spot
+      span
+      div(type='row')
+        button(type='button' name='filled' color='gray' onclick=`location.href='/'`) Cancelar
+        button(type='submit' name='filled') Autorizar
+      div(type='column')
+        span(name='caption') Después de autorizar se redireccionará a
+        span(name='caption' font='bold') #{redirectDomain}
+    p
+      span(name='caption') La aplicación no es propiedad ni está operada por Spot
+    footer
+      a(href='/' target='_blank') Cuenta
+      a(href='/' target='_blank') OAuth
+      a(href='/' target='_blank') Contacto

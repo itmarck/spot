@@ -1,0 +1,39 @@
+extends layout.pug
+
+block styles
+  link(rel='stylesheet' href='/static/form.css')
+
+block body
+  main
+    header
+      h1 Spot
+    p El código de acceso será enviado al correo, no se necesita registro previo.
+    form(method='post' action=`${action}`)
+      div(type='column')
+        label(for='email')
+          span Correo
+          button(type='button' name="text") Enviar código
+        input(
+          id='email'
+          type='email'
+          placeholder='user@example.com'
+          autofocus
+          required
+        )
+      div(type='column')
+        label(for='code') Código de acceso
+        input(
+          id='code'
+          type='text'
+          placeholder='000000'
+          autocomplete='off'
+          pattern='([0-9]{6})'
+          required
+        )
+      span
+      div(type='column')
+        button(type='submit' name='filled') Acceder
+    footer
+      a(href='/' target='_blank') Inicio
+      a(href='/' target='_blank') OAuth
+      a(href='/' target='_blank') Contacto

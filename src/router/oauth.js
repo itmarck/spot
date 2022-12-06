@@ -1,5 +1,6 @@
 import cors from 'cors'
 import { Router } from 'express'
+import { URL } from 'url'
 import { getApplication } from '../data/application.js'
 import { getSession } from '../data/session.js'
 import { CONTEXTS, SESSIONS } from '../shared/constants.js'
@@ -10,11 +11,19 @@ const oauth = Router()
 
 oauth.use(cors())
 
-oauth.get('/authorize', function ({ query, cookies }, response) {
+oauth.get('/authorize', function (request, response) {
+  const { query, cookies } = request
+  const redirect = new URL(query['redirect_uri'])
+  const redirectOrigin = redirect && redirect.origin
+
+  response.header('Cache-Control', 'no-cache')
+
   response.render('authorize', {
+    title: 'Autorizar aplicación',
     client: query['client_id'],
     secret: query['client_secret'],
-    redirect: query['redirect_uri'],
+    redirect: redirect,
+    redirectDomain: redirectOrigin,
     scope: query['scope'],
     state: query['state'],
     token: cookies['access_token'],
