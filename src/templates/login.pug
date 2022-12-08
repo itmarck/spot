@@ -3,6 +3,9 @@ extends layout.pug
 block styles
   link(rel='stylesheet' href='/static/form.css')
 
+block scripts
+  script(src='/static/scripts/login.js')
+
 block body
   main
     header
@@ -12,9 +15,10 @@ block body
       div(type='column')
         label(for='email')
           span Correo
-          button(type='button' name="text") Enviar código
+          button(type='button' id='send-code' name='text') Enviar código
         input(
           id='email'
+          name='email'
           type='email'
           placeholder='user@example.com'
           autofocus
@@ -24,6 +28,7 @@ block body
         label(for='code') Código de acceso
         input(
           id='code'
+          name='code'
           type='text'
           placeholder='000000'
           autocomplete='off'

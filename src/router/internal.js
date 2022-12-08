@@ -1,12 +1,16 @@
 import { Router } from 'express'
+import { getSession } from '../data/session.js'
+import { getUser } from '../data/user.js'
+import { CONTEXTS, KEYS } from '../shared/constants.js'
 import { execute } from '../shared/database.js'
+import { sign } from '../shared/jwt.js'
 import { sendMail } from '../shared/mail.js'
 import { isExpired } from '../shared/time.js'
 
 const internal = Router()
 
 internal.post('/code', async function (request, response) {
-  const { query: { email } = {} } = request
+  const { body: { email } = {} } = request
 
   if (!email) {
     response.status(400).send('Missing email')
@@ -39,38 +43,37 @@ internal.post('/code', async function (request, response) {
   response.status(204).send()
 })
 
-internal.post('/login', async function (request, response) {
-  const { body: { email, code } = {} } = request
+internal.post('/session', async function (request, response) {
+  const { body: { email, code } = {}, query = {} } = request
+  const returnTo = query['return_to'] || '/'
 
   if (!email || !code) {
-    response.status(400).send('Email and code are required')
-    return
+    return response.status(400).send({
+      message: 'Missing email or code',
+    })
   }
 
-  const [user] = await execute(`SELECT * FROM user WHERE email = '${email}'`)
-  const sessions = await execute(
-    `SELECT * FROM session WHERE user = ${user.id}`,
-  )
-
-  const session = sessions.at(-1)
+  const user = await getUser(email, { byEmail: true })
+  const userId = user && user.id
+  const session = await getSession({ user: userId })
   const sessionCode = session && session.code
-  const sessionCreatedTime = session && session.created_at
+  const sessionCreatedTime = session && session.createdAt
 
   if (sessionCode !== code) {
-    response.status(401).send({
+    return response.status(401).send({
       message: 'Invalid code',
     })
-    return
   }
 
   if (isExpired(sessionCreatedTime)) {
-    response.status(401).send({
+    return response.status(401).send({
       message: 'Expired code',
     })
-    return
   }
 
-  response.status(204).send()
+  const internalToken = sign(CONTEXTS.internal, { uid: userId })
+  response.cookie(KEYS.internalToken, internalToken)
+  response.redirect(returnTo)
 })
 
 export default internal
