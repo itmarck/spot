@@ -24,6 +24,6 @@ export function verify(token) {
   try {
     return jsonwebtoken.verify(token, jwt.secret)
   } catch (error) {
-    return undefined
+    return
   }
 }

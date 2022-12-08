@@ -6,17 +6,32 @@ config()
 
 const base = dirname(dirname(dirname(fileURLToPath(import.meta.url))))
 
+const server = {
+  host: process.env.SERVER_HOST,
+  port: process.env.SERVER_PORT,
+}
+
+export function setup() {
+  return function (request, response, next) {
+    const { protocol, hostname } = request
+
+    server.host = `${protocol}://${hostname}`
+
+    next()
+  }
+}
+
+export function host() {
+  return server.host || ''
+}
+
+export const port = server.port || 3000
+
 export const directories = {
   base: base,
   public: join(base, 'public'),
   templates: join(base, 'src/templates'),
 }
-
-export const server = {
-  port: process.env.SERVER_PORT,
-}
-
-export const port = server.port || 3000
 
 export const database = {
   name: process.env.MYSQLDATABASE,
