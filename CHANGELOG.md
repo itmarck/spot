@@ -1,3 +1,12 @@
+## 0.2.0 (Dic 09, 2022)
+
+- Complete authentication flow
+- Gravatar integration
+- API endpoints
+- Models to handle data from database
+- Avatars as default profile picture
+- Beta flag and version added
+
 ## 0.1.2 (Dic 01, 2022)
 
 - Setup JWT with basic flow
