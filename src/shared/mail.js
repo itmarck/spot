@@ -2,7 +2,7 @@ import { createTransport } from 'nodemailer'
 import { mail } from './configuration.js'
 
 const transport = createTransport({
-  host: 'mail.host',
+  host: mail.host,
   port: mail.port,
   secure: true,
   auth: {
