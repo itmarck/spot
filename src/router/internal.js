@@ -1,8 +1,7 @@
 import { Router } from 'express'
-import { getSession } from '../data/session.js'
-import { getUser } from '../data/user.js'
+import { createSession, getSession } from '../data/session.js'
+import { getOrCreateUser, getUser } from '../data/user.js'
 import { CONTEXTS, KEYS } from '../shared/constants.js'
-import { execute } from '../shared/database.js'
 import { sign } from '../shared/jwt.js'
 import { sendMail } from '../shared/mail.js'
 import { isExpired } from '../shared/time.js'
@@ -13,31 +12,17 @@ internal.post('/code', async function (request, response) {
   const { body: { email } = {} } = request
 
   if (!email) {
-    response.status(400).send('Missing email')
-    return
+    return response.status(400).send({
+      message: 'Missing email',
+    })
   }
 
-  let [user] = await execute(`SELECT * FROM user WHERE email = '${email}'`)
-
-  if (!user) {
-    const name = email.split('@')[0]
-    await execute(
-      `INSERT INTO user (email, name) VALUES ('${email}', '${name}')`,
-    )
-    const [newUser] = await execute(
-      `SELECT * FROM user WHERE email = '${email}'`,
-    )
-    user = newUser
-  }
-
-  const code = Math.floor(100000 + Math.random() * 900000)
-  await execute(
-    `INSERT INTO session (user, type, code) VALUES (${user.id}, 1, '${code}')`,
-  )
+  const user = await getOrCreateUser(email)
+  const code = await createSession({ userId: user.id })
 
   sendMail(email, {
     subject: 'Código de inicio de sesión',
-    message: `${code}`,
+    message: `Usa este código para iniciar sesión en Spot: ${code}`,
   })
 
   response.status(204).send()

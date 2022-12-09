@@ -9,14 +9,42 @@ export async function getUser(value, { byEmail = false } = {}) {
   const query = `SELECT * FROM user WHERE ${criteria} = "${value}"`
   const data = await execute(query, { as: 'object' })
   const email = data && data.email
-  const avatar = email && `${hostname}/avatars/${email.length % 9}`
+  const avatar = data && data.avatar
 
   if (!email) {
     return
   }
 
-  const gravatar = await getGravatar(email)
-  data.avatar = gravatar || avatar
+  if (avatar && avatar.startsWith('/')) {
+    data.avatar = `${hostname}${avatar}`
+  }
 
   return data && User.fromJSON(data)
+}
+
+export async function createUser(email, { name, avatar }) {
+  const query = `
+    INSERT INTO user (email, name, avatar)
+    VALUES ('${email}', '${name}', '${avatar}')
+  `
+  await execute(query)
+  return getUser(email, { byEmail: true })
+}
+
+export async function getOrCreateUser(email = '') {
+  const user = await getUser(email, { byEmail: true })
+
+  if (user) {
+    return user
+  }
+
+  const defaultName = email.split('@')[0]
+  const defaultAvatar = `/avatars/${email.length % 9}`
+  const gravatar = await getGravatar(email)
+  const { name, photo } = gravatar || {}
+
+  return await createUser(email, {
+    name: name || defaultName,
+    avatar: photo || defaultAvatar,
+  })
 }

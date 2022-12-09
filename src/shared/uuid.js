@@ -10,3 +10,7 @@ export function generateClientId() {
 export function generateGravatarHash(email) {
   return createHash('md5').update(email).digest('hex')
 }
+
+export function generateCode() {
+  return Math.floor(100000 + Math.random() * 900000)
+}

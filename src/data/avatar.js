@@ -9,11 +9,15 @@ export async function getGravatar(email) {
     const response = await axios.get(gravatarUrl)
     const { data: { entry: [gravatar] = [] } = {}, status } = response
 
-    if (status !== 200) {
+    if (status !== 200 || !gravatar) {
       return
     }
 
-    return gravatar && gravatar.thumbnailUrl
+    return {
+      name: gravatar.displayName,
+      photo: gravatar.thumbnailUrl,
+      location: gravatar.currentLocation,
+    }
   } catch {
     return
   }

@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import { getAvatarInSvg } from '../data/avatar.js'
 import { getUser } from '../data/user.js'
-import { host } from '../shared/configuration.js'
 import { CONTEXTS, KEYS } from '../shared/constants.js'
 import { verify } from '../shared/jwt.js'
 
