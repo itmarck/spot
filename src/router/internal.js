@@ -20,10 +20,14 @@ internal.post('/code', async function (request, response) {
   const user = await getOrCreateUser(email)
   const code = await createSession({ userId: user.id })
 
-  sendMail(email, {
-    subject: 'Código de inicio de sesión',
-    message: `Usa este código para iniciar sesión en Spot: ${code}`,
-  })
+  try {
+    sendMail(email, {
+      subject: 'Código de inicio de sesión',
+      message: `Usa este código para iniciar sesión en Spot: ${code}`,
+    })
+  } catch (error) {
+    console.error(error)
+  }
 
   response.status(204).send()
 })
