@@ -1,3 +1,8 @@
+## O.2.1 (Dic 09, 2022)
+
+- Ready to deploy over docker
+- Dockerfile added
+
 ## 0.2.0 (Dic 09, 2022)
 
 - Complete authentication flow
