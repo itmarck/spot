@@ -24,8 +24,5 @@
     "nodemon": "^2.0.20",
     "pug": "^3.0.2"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "license": "UNLICENSED"
 }
