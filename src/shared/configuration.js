@@ -26,6 +26,7 @@ export function host() {
 }
 
 export const port = server.port || 3000
+export const version = process.env.npm_package_version
 
 export const directories = {
   base: base,

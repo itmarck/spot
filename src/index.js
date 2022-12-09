@@ -1,9 +1,11 @@
 import parser from 'cookie-parser'
 import express from 'express'
 import { api, internal, oauth, web } from './router/index.js'
-import { directories, port, setup } from './shared/configuration.js'
+import { directories, port, setup, version } from './shared/configuration.js'
 
 const server = express()
+
+server.locals.version = version
 
 server.use(express.static(directories.public))
 
