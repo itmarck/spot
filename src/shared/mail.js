@@ -2,7 +2,7 @@ import { createTransport } from 'nodemailer'
 import { mail } from './configuration.js'
 
 const transport = createTransport({
-  host: mail.host,
+  host: 'mail.host',
   port: mail.port,
   secure: true,
   auth: {
@@ -11,7 +11,7 @@ const transport = createTransport({
   },
 })
 
-export async function sendMail(to, { subject, message }) {
+export function sendMail(to, { subject, message }) {
   const options = {
     from: {
       name: 'Spot',
@@ -22,13 +22,9 @@ export async function sendMail(to, { subject, message }) {
     text: message,
   }
 
-  return new Promise(function (resolve, reject) {
-    transport.sendMail(options, function (error, data) {
-      if (error) {
-        reject(error)
-      } else {
-        resolve(data)
-      }
-    })
+  const promise = transport.sendMail(options)
+
+  promise.catch(function (error) {
+    console.error(error)
   })
 }
