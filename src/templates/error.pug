@@ -1,0 +1,22 @@
+extends layout.pug
+
+block styles
+  link(rel='stylesheet' href='/static/form.css')
+
+block body
+  main
+    header
+      h1 Spot
+    p Algo salió mal
+    form
+      div(type='column' align='left')
+        span(name='caption' font='bold') Detalle del error
+        span #{message}
+      span
+      div(type='column')
+        button(
+          type='button'
+          name='filled'
+          color='gray'
+          onclick=`location.href='/'`
+        ) Volver a Spot

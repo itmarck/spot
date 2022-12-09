@@ -10,19 +10,19 @@ web.get('/', async function (request, response) {
   const { cookies = {} } = request
   const internalToken = cookies[KEYS.internalToken]
   const { uid, context } = verify(internalToken) || {}
-  const hasAccess = uid && context === CONTEXTS.internal
+  const loggedIn = uid && context === CONTEXTS.internal
   const user = await getUser(uid)
 
   response.render('home', {
     title: 'Welcome to Spot',
-    user: hasAccess && user,
+    user: loggedIn && user,
   })
 })
 
 web.get('/login', function (request, response) {
   const { cookies = {}, query = {} } = request
   const returnTo = query['return_to'] || '/'
-  const actionUrl = `/_/session?return_to=${returnTo}`
+  const actionUrl = `/_/session?return_to=${encodeURIComponent(returnTo)}`
   const internalToken = cookies[KEYS.internalToken]
   const { uid, context } = verify(internalToken) || {}
 

@@ -31,11 +31,12 @@ export async function getSession({ type = SESSIONS.web, code, user }) {
 }
 
 export async function createSession({ type = SESSIONS.web, userId }) {
-  const code = generateCode()
+  const code = generateCode(type)
   const query = `
     INSERT INTO session (user, type, code)
     VALUES ('${userId}', '${type}', '${code}')
   `
   await execute(query)
+
   return code
 }

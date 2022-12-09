@@ -10,11 +10,11 @@ block body
     p 
       span 
         span
-          a(href='/') App 
-        span de User
+          a(href='#') #{application.name} 
+        span de #{application.owner.name}
       br
       span quiere acceder a tu cuenta de Spot
-    form(method='post' action=`/_/login?redirect=${redirect}`)
+    form(method='post' action=`${action}`)
       div(type='column' align='left')
         span Datos de tu cuenta
         span(name='secondary') Correo, nombre y foto (solo lectura)
