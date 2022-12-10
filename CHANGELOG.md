@@ -1,3 +1,8 @@
+## 0.2.2 (Dic 10, 2022)
+
+- Handle server errors
+- Setup popup functionality
+
 ## O.2.1 (Dic 09, 2022)
 
 - Ready to deploy over docker
