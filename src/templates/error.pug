@@ -7,7 +7,7 @@ block body
   main
     header
       h1 Spot
-    p Algo salió mal
+    p
     form
       div(type='column' align='left')
         span(name='caption' font='bold') Detalle del error
@@ -18,5 +18,5 @@ block body
           type='button'
           name='filled'
           color='gray'
-          onclick=`location.href='/'`
-        ) Volver a Spot
+          onclick='history.back()'
+        ) Regresar

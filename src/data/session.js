@@ -8,11 +8,11 @@ import { generateCode } from '../shared/uuid.js'
  *
  * @param {object} options
  * @param {number} options.type Session type.
- * @param {number} options.user Session user identifier.
+ * @param {number} options.userId Session user identifier.
  * @param {string} options.code Session code.
  * @returns
  */
-export async function getSession({ type = SESSIONS.web, code, user }) {
+export async function getSession({ type = SESSIONS.web, code, userId }) {
   if (!Object.values(SESSIONS).includes(type)) {
     throw new Error(`Invalid session type: ${type}`)
   }
@@ -21,7 +21,7 @@ export async function getSession({ type = SESSIONS.web, code, user }) {
     SELECT * FROM session
     WHERE type = '${type}'
     AND code = '${code}'
-    OR user = '${user}'
+    OR user = '${userId}'
     ORDER BY id DESC
     LIMIT 1
   `

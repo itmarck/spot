@@ -2,6 +2,7 @@ extends layout.pug
 
 block styles
   link(rel='stylesheet' href='/static/form.css')
+  link(rel='stylesheet' href='/static/popup.css')
 
 block scripts
   script(src='/static/scripts/login.js')
@@ -15,7 +16,7 @@ block body
       div(type='column')
         label(for='email')
           span Correo
-          button(type='button' id='send-code' name='text') Enviar código
+          button(type='button' id='sender' name='text') Enviar código
         input(
           id='email'
           name='email'

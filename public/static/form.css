@@ -50,6 +50,14 @@ button[name='text']:hover {
   text-decoration: underline;
 }
 
+button[name='text']:disabled {
+  color: var(--color-soft);
+}
+
+button[name='text']:disabled:hover {
+  text-decoration: none;
+}
+
 button[name='filled'] {
   color: white;
   background-color: var(--color-primary);

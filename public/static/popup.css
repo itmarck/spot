@@ -1,0 +1,32 @@
+#popup {
+  --animation-time: 0.3s;
+
+  position: fixed;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-soft);
+  border-radius: 0.5rem;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 1rem;
+  padding: 1rem;
+  max-width: 24rem;
+  z-index: 1;
+  transform: translateX(-32rem);
+  animation: slices var(--animation-time) ease-in-out;
+  transition: transform var(--animation-time) ease-in-out;
+}
+
+#popup.display {
+  transform: translateX(0);
+}
+
+@keyframes slices {
+  from {
+    transform: translateX(-32rem);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
