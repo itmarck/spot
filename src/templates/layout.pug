@@ -3,6 +3,7 @@ html(lang='en')
   head
     meta(charset='UTF-8')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='/static/global.css')
     link(rel='stylesheet' href='/static/base.css')
     block styles
     link(rel='icon' href='/favicon.svg')
@@ -10,7 +11,8 @@ html(lang='en')
   body
     block body
 
-    div(class='version') v#{version}
-    div(class='beta') Beta
+    div
+      div(id='version') v#{version}
+      div(id='beta') Beta
 
     block scripts

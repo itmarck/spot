@@ -1,0 +1,17 @@
+header
+  div(space='limited')
+    div(type='row')
+      a(href='/' title='Spot')
+        include ../../public/favicon.svg
+      div(type='row')
+        if loggedIn
+          a(href='/account')
+            div(type='row')
+              span(align='right') #{user.name}
+              img(
+                src=user.avatar
+                alt='Avatar'
+                type='avatar'
+              )
+        else
+          a(href='/login' type='link') Acceder

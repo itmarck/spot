@@ -11,11 +11,15 @@ web.get('/', async function (request, response) {
   const internalToken = cookies[KEYS.internalToken]
   const { uid, context } = verify(internalToken) || {}
   const loggedIn = uid && context === CONTEXTS.internal
-  const user = await getUser(uid)
+  const options = { loggedIn }
+
+  if (loggedIn) {
+    options.user = await getUser(uid)
+  }
 
   response.render('home', {
     title: 'Welcome to Spot',
-    user: loggedIn && user,
+    ...options,
   })
 })
 
