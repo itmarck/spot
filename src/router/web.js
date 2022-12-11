@@ -1,36 +1,35 @@
 import { Router } from 'express'
-import { getAvatarInSvg } from '../data/avatar.js'
-import { getUser } from '../data/user.js'
-import { CONTEXTS, KEYS } from '../shared/constants.js'
-import { verify } from '../shared/jwt.js'
+import { analizeInternalToken } from '../middlewares/token.js'
+import { KEYS } from '../shared/constants.js'
 
 const web = Router()
 
+web.use(analizeInternalToken())
+
 web.get('/', async function (request, response) {
-  const { cookies = {} } = request
-  const internalToken = cookies[KEYS.internalToken]
-  const { uid, context } = verify(internalToken) || {}
-  const loggedIn = uid && context === CONTEXTS.internal
-  const options = { loggedIn }
-
-  if (loggedIn) {
-    options.user = await getUser(uid)
-  }
-
   response.render('home', {
     title: 'Welcome to Spot',
-    ...options,
+  })
+})
+
+web.get('/account', function (request, response) {
+  const loggedIn = response.locals.loggedIn
+
+  if (!loggedIn) {
+    return response.redirect('/login')
+  }
+
+  response.render('account', {
+    title: 'Mi cuenta',
   })
 })
 
 web.get('/login', function (request, response) {
-  const { cookies = {}, query = {} } = request
-  const returnTo = query['return_to'] || '/'
+  const returnTo = request.query['return_to'] || '/'
+  const loggedIn = response.locals.loggedIn
   const actionUrl = `/_/session?return_to=${encodeURIComponent(returnTo)}`
-  const internalToken = cookies[KEYS.internalToken]
-  const { uid, context } = verify(internalToken) || {}
 
-  if (uid && context === CONTEXTS.internal) {
+  if (loggedIn) {
     return response.redirect(returnTo)
   }
 
@@ -41,19 +40,8 @@ web.get('/login', function (request, response) {
 })
 
 web.get('/logout', function (request, response) {
-  const { query = {} } = request
-  const returnTo = query['return_to'] || '/'
-
   response.clearCookie(KEYS.internalToken)
-  response.redirect(returnTo)
-})
-
-web.get('/avatars/:avatar', function (request, response) {
-  const { avatar } = request.params
-
-  response.header('Content-Type', 'image/svg+xml')
-
-  response.send(getAvatarInSvg({ position: avatar }))
+  response.redirect('/')
 })
 
 export default web

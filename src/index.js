@@ -1,6 +1,6 @@
 import parser from 'cookie-parser'
 import express from 'express'
-import { api, internal, oauth, web } from './router/index.js'
+import { api, internal, oauth, services, web } from './router/index.js'
 import { directories, port, setup, version } from './shared/configuration.js'
 
 const server = express()
@@ -20,6 +20,7 @@ server.use(express.urlencoded({ extended: true }))
 server.use('/api/v1', api)
 server.use('/oauth', oauth)
 server.use('/_', internal)
+server.use('/', services)
 server.use('/', web)
 
 server.listen(port)
