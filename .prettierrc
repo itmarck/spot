@@ -1,6 +1,13 @@
 {
   "semi": false,
+  "useTabs": false,
   "tabWidth": 2,
+  "printWidth": 80,
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "pugAttributeSeparator": "none",
+  "pugEmptyAttributes": "none",
+  "pugBracketSameLine": false,
+  "pugBracketSpacing": false,
+  "pugExplicitDiv": true
 }

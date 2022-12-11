@@ -59,6 +59,7 @@ div[type='column'] {
 
 div[align='left'] {
   text-align: left;
+  justify-content: flex-start;
 }
 
 button[name='text'] {
@@ -95,11 +96,11 @@ button[color='gray'] {
 
 span[name='caption'] {
   font-size: 0.75rem;
-  color: #999;
+  color: var(--color-subtext);
 }
 
 span[name='secondary'] {
-  color: #999;
+  color: var(--color-subtext);
 }
 
 span[font='bold'] {

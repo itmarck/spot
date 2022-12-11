@@ -7,14 +7,14 @@ block body
   main
     header
       h1 Spot
-    p 
-      span 
+    p
+      span
         span
-          a(href='#' type='link') #{application.name} 
+          a(href='#' type='link') #{application.name}&nbsp;
         span de #{application.owner.name}
       br
       span quiere acceder a tu cuenta de Spot
-    form(method='post' action=`${action}`)
+    form(method='post' action=action)
       div(type='column' align='left')
         span Datos de tu cuenta
         span(name='secondary') Correo, nombre y foto (solo lectura)
@@ -23,7 +23,12 @@ block body
         span(name='secondary') Acceso a tu almacenamiento de Spot
       span
       div(type='row')
-        button(type='button' name='filled' color='gray' onclick=`location.href='/'`) Cancelar
+        button(
+          type='button'
+          name='filled'
+          color='gray'
+          onclick='history.back()'
+        ) Cancelar
         button(type='submit' name='filled') Autorizar
       div(type='column')
         span(name='caption') Después de autorizar se redireccionará a

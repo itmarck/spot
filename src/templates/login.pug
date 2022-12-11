@@ -12,13 +12,12 @@ block body
     header
       h1 Spot
     p El código de acceso será enviado al correo, no se necesita registro previo.
-    form(method='post' action=`${action}`)
+    form(method='post' action=action)
       div(type='column')
         label(for='email')
           span Correo
-          button(type='button' id='sender' name='text') Enviar código
-        input(
-          id='email'
+          button#sender(type='button' name='text') Enviar código
+        input#email(
           name='email'
           type='email'
           placeholder='user@example.com'
@@ -27,8 +26,7 @@ block body
         )
       div(type='column')
         label(for='code') Código de acceso
-        input(
-          id='code'
+        input#code(
           name='code'
           type='text'
           placeholder='000000'

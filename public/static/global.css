@@ -9,14 +9,15 @@
 /* Dynamic custom properties */
 html {
   --color-primary: #b052c8;
-  --color-background: #fff;
-  --color-soft: #ddd;
-  --color-text: #333;
+  --color-background: #ffffff;
+  --color-soft: #f0f0f0;
+  --color-text: #4d4d4d;
+  --color-subtext: #acacac;
 
   font-size: var(--font-size);
 }
 
-/* Reset styles */
+/* Global styles */
 body {
   color: var(--color-text);
   background-color: var(--color-background);
@@ -42,9 +43,34 @@ img {
 }
 
 h1 {
+  margin: 0;
   font-size: 1.5rem;
   font-weight: normal;
+}
+
+h2 {
   margin: 0;
+  font-size: 1.25rem;
+  font-weight: normal;
+}
+
+h2::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-soft);
+  margin-top: 0.5rem;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+input::placeholder {
+  color: var(--color-subtext);
 }
 
 input:focus {
