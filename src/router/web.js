@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { getAuthorizedApplications } from '../data/application.js'
 import { analizeInternalToken } from '../middlewares/token.js'
 import { KEYS } from '../shared/constants.js'
 
@@ -12,15 +13,20 @@ web.get('/', async function (request, response) {
   })
 })
 
-web.get('/account', function (request, response) {
+web.get('/account', async function (request, response) {
   const loggedIn = response.locals.loggedIn
+  const user = response.locals.user
+  const userId = user && user.id
 
   if (!loggedIn) {
     return response.redirect('/login')
   }
 
+  const authorizedApplications = await getAuthorizedApplications(userId)
+
   response.render('account', {
     title: 'Mi cuenta',
+    authorizedApplications,
   })
 })
 

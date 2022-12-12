@@ -6,19 +6,24 @@ block styles
 block body
   include header.pug
 
-  h2(content) Mi perfil
+  h2(content)
+    div(row)
+      span Perfil
+      form(action='/logout')
+        button(type='submit' text) Cerrar sesión
   section(content)
     div(row left)
       img(src=user.avatar alt='Avatar' avatar large)
       div(column left)
-        h3 #{user.name}
-        span(subtitle) #{user.email}
+        span(bold)= user.name
+        span(subtitle)= user.email
         span
         div(row)
-          button(type='button' text) Actualizar desde Gravatar
+          form(action='/account/gravatar' method='post')
+            button(type='submit' text) Actualizar desde Gravatar
 
   section(content)
-    form(action='/account' method='post')
+    form(action='/account/profile' method='post' visible)
       div(column)
         label(for='name' row) Nombre
         input#name(
@@ -34,9 +39,46 @@ block body
   h2(content) Aplicaciones autorizadas
   section(content)
     div(column)
-      span No tienes aplicaciones autorizadas.
+      if authorizedApplications && authorizedApplications.length > 0
+        h3 Aplicaciones de OAuth
+        div(subtitle)
+          span Le has dado acceso a&nbsp;
+          span(bold)
+            if authorizedApplications.length == 1
+              | una aplicación&nbsp;
+            else
+              | #{authorizedApplications.length} aplicaciones&nbsp;
+          span a tu cuenta.
+        br
+        br
+        ul(column)
+          each application in authorizedApplications
+            li(row)
+              div(row)
+                div(column)
+                  img(src=application.avatar title=application.name avatar)
+                div(column)
+                  span= application.name
+                  div(paragraph)= application.authorizedAt
+                  div(caption row left title=application.owner.email)
+                    span Aplicacion creada por&nbsp;
+                    img(src=application.owner.avatar avatar tiny)
+                    span(bold)= application.owner.name
+              form(action='/account/application' method='post')
+                input(type='hidden' name='id' value=application.id)
+                button(type='submit' text) Revocar acceso
+      else
+        span No tienes aplicaciones autorizadas.
 
   h2(content) Opciones de desarrollador
   section(content)
-    div(column)
-      span No tienes aplicaciones creadas.
+    h3 Aplicaciones de OAuth
+    div(subtitle) Las aplicaciones de OAuth son usadas para acceder a la API de Spot desde otras aplicaciones.
+    br
+    a(href='/account/applications')
+      button(type='submit' text) Ir a mis aplicaciones de OAuth
+    br
+    br
+    h3 Personal access tokens
+    div(subtitle) Genera tu token de acceso personal para acceder a la API de Spot. Disponible próximamente.
+    br
