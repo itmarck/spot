@@ -1,0 +1,42 @@
+extends layout.pug
+
+block styles
+  link(rel='stylesheet' href='/static/account.css')
+
+block body
+  include header.pug
+
+  h2(content) Mi perfil
+  section(content)
+    div(row left)
+      img(src=user.avatar alt='Avatar' avatar large)
+      div(column left)
+        h3 #{user.name}
+        span(subtitle) #{user.email}
+        span
+        div(row)
+          button(type='button' text) Actualizar desde Gravatar
+
+  section(content)
+    form(action='/account' method='post')
+      div(column)
+        label(for='name' row) Nombre
+        input#name(
+          name='name'
+          value=user.name
+          placeholder='Nombre'
+          required
+          text
+        )
+        span(caption) Nombre público para todas las aplicaciones que autorices. Puedes cambiarlo en cualquier momento.
+      button(type='submit' block) Guardar
+
+  h2(content) Aplicaciones autorizadas
+  section(content)
+    div(column)
+      span No tienes aplicaciones autorizadas.
+
+  h2(content) Opciones de desarrollador
+  section(content)
+    div(column)
+      span No tienes aplicaciones creadas.

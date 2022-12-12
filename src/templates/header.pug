@@ -1,13 +1,13 @@
 header
-  div(space='limited')
-    div(type='row')
+  div(content)
+    div(row)
       a(href='/' title='Spot')
         include ../../public/favicon.svg
-      div(type='row')
+      div(row)
         if loggedIn
           a(href='/account')
-            div(type='row')
-              span(align='right') #{user.name}
-              img(src=user.avatar alt='Avatar' type='avatar')
+            div(row)
+              span(right) #{user.name}
+              img(src=user.avatar alt='Avatar' avatar small)
         else
-          a(href='/login' type='link') Acceder
+          a(href='/login' link) Acceder

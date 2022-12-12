@@ -4,7 +4,7 @@
   position: fixed;
   color: var(--color-text);
   background-color: var(--color-background);
-  border: 1px solid var(--color-soft);
+  border: var(--border-soft);
   border-radius: 0.5rem;
   top: 0;
   left: 0;

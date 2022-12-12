@@ -13,6 +13,7 @@ html {
   --color-soft: #f0f0f0;
   --color-text: #4d4d4d;
   --color-subtext: #acacac;
+  --border-soft: 1px solid var(--color-soft);
 
   font-size: var(--font-size);
 }

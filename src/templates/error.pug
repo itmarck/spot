@@ -9,14 +9,14 @@ block body
       h1 Spot
     p
     form
-      div(type='column' align='left')
-        span(name='caption' font='bold') Detalle del error
+      div(column left)
+        span(caption bold) Detalle del error
         span #{message}
       span
-      div(type='column')
+      div(column)
         button(
           type='button'
-          name='filled'
-          color='gray'
+          block
+          color='none'
           onclick='history.back()'
         ) Regresar

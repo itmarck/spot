@@ -13,30 +13,31 @@ block body
       h1 Spot
     p El código de acceso será enviado al correo, no se necesita registro previo.
     form(method='post' action=action)
-      div(type='column')
-        label(for='email')
+      div(column)
+        label(for='email' row)
           span Correo
-          button#sender(type='button' name='text') Enviar código
+          button#sender(type='button' text) Enviar código
         input#email(
           name='email'
           type='email'
           placeholder='user@example.com'
           autofocus
           required
+          text
         )
-      div(type='column')
-        label(for='code') Código de acceso
+      div(column)
+        label(for='code' row) Código de acceso
         input#code(
           name='code'
-          type='text'
           placeholder='000000'
           autocomplete='off'
           pattern='([0-9]{6})'
           required
+          text
         )
       span
-      div(type='column')
-        button(type='submit' name='filled') Acceder
+      div(column)
+        button(type='submit' block) Acceder
     footer
       a(href='/' target='_blank') Inicio
       a(href='/' target='_blank') OAuth

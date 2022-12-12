@@ -1,46 +1,20 @@
-/* Styles based on html element */
+/**
+ * Styles based on html attribute
+ * 
+ * [color=""]      primary none (html element required)
+ * [area=""]       wide content
+ * [direction]     row column
+ * [alignment]     left right
+ * [typography]    subtitle caption link
+ * [size]          small regular large (html element required)
+ * [font]          normal bold
+ * Buttons         text block[color]
+ * Image           avatar[size]
+ * Inputs          text
+ * 
+ */
 
-[color='primary'] {
-  color: var(--color-primary);
-}
-
-[space='wide'],
-[space='limited'] {
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-[space='limited'] {
-  max-width: 64rem;
-}
-
-a[type='link'] {
-  color: var(--color-primary);
-}
-
-img[type='avatar'] {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-}
-
-header {
-  padding: 0.5rem 0;
-}
-
-input {
-  padding: 5px 12px;
-  border: 1px solid var(--color-soft);
-  border-radius: 6px;
-}
-
-label {
-  margin-bottom: 4px;
-}
-
-label,
-div[type='row'] {
+[row] {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -48,63 +22,110 @@ div[type='row'] {
   gap: 1rem;
 }
 
-div[type='row'] > button {
-  flex: 1;
-}
-
-div[type='column'] {
+[column] {
   display: flex;
   flex-direction: column;
 }
 
-div[align='left'] {
+[left] {
   text-align: left;
   justify-content: flex-start;
 }
 
-button[name='text'] {
+[right] {
+  text-align: right;
+  justify-content: flex-start;
+}
+
+[wide],
+[content] {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+[content] {
+  max-width: 64rem;
+}
+
+[subtitle] {
+  color: var(--color-subtext);
+}
+
+[caption] {
+  font-size: 0.75rem;
+  color: var(--color-subtext);
+}
+
+[link] {
+  color: var(--color-primary);
+}
+
+[normal] {
+  font-weight: normal;
+}
+
+[bold] {
+  font-weight: bold;
+}
+
+button[text] {
   color: var(--color-primary);
   font-size: 0.85rem;
   cursor: default;
 }
 
-button[name='text']:hover {
+button[text]:hover {
   text-decoration: underline;
 }
 
-button[name='text']:disabled {
+button[text]:disabled {
   color: var(--color-soft);
 }
 
-button[name='text']:disabled:hover {
+button[text]:disabled:hover {
   text-decoration: none;
 }
 
-button[name='filled'] {
-  color: white;
+button[block] {
+  color: var(--color-background);
   background-color: var(--color-primary);
+  border: 1px solid var(--color-primary);
   padding: 5px 12px;
   border-radius: 6px;
-  border: 1px solid var(--color-primary);
+  flex: 1;
 }
 
-button[color='gray'] {
-  background-color: white;
+button[block][color='none'] {
   color: inherit;
-  border: 1px solid var(--color-soft);
+  background-color: var(--color-background);
+  border: var(--border-soft);
 }
 
-span[name='caption'] {
-  font-size: 0.75rem;
-  color: var(--color-subtext);
+img[avatar],
+img[avatar][small] {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
 }
 
-span[name='secondary'] {
-  color: var(--color-subtext);
+img[avatar][large] {
+  width: 4rem;
+  height: 4rem;
 }
 
-span[font='bold'] {
-  font-weight: bold;
+input[text] {
+  padding: 5px 12px;
+  border: var(--border-soft);
+  border-radius: 6px;
+}
+
+label[for] {
+  margin-bottom: 4px;
+}
+
+header {
+  padding: 0.5rem 0;
 }
 
 #version {
@@ -120,7 +141,7 @@ span[font='bold'] {
   font-size: 0.8rem;
   color: var(--color-text);
   background-color: var(--color-background);
-  border: 1px solid var(--color-soft);
+  border: var(--border-soft);
   position: fixed;
   top: 1rem;
   right: -3rem;
