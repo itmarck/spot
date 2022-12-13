@@ -1,0 +1,72 @@
+extends layout.pug
+
+block styles
+  link(rel='stylesheet' href='/static/account.css')
+
+block body
+  include header.pug
+
+  h2(content)= application.name
+  section(content)
+    div Eres el propietario de esta aplicación.
+    br
+  section(content)
+    h3 Client ID
+    div(subtitle) Identificador de tu aplicación.
+    br
+    div= application.clientId
+  section(content)
+    h3 Client secret
+    div(subtitle) Clave secreta para autenticarte como aplicación.
+    br
+    div
+      if application.clientSecret
+        span#secret= application.clientSecret
+      else
+        span ********
+      br
+      br
+      span(paragraph) Puedes generar una nueva clave en cualquier momento sin perder las anteriores.
+      br
+      form
+        button(type='submit' text) Generar nueva clave
+      br
+
+  section(content)
+    img(src=application.avatar title=application.name avatar large)
+    br
+    br
+    form(action='/account/applications' method='post' visible)
+      div(column)
+        label(for='name') Nombre de la aplicación
+        input#name(
+          name='name'
+          placeholder='Nueva aplicación'
+          value=application.name
+          required
+          text
+        )
+        span(caption) Algo que los usuarios reconocerán y confiarán.
+      div(column)
+        label(for='description') Breve descripción de la aplicación
+        input#description(
+          name='description'
+          placeholder='Opcional'
+          value=application.description
+          text
+        )
+      div(column)
+        label(for='url') Callback URL
+        input#url(
+          type='url'
+          name='callback_url'
+          placeholder='https://example.com/callback'
+          value=application.redirectUri
+          required
+          text
+        )
+        span(caption) Se redirigirá a los usuarios a esta URL después de obtener la autorización a tu aplicación.
+      span
+      button(type='submit' block) Actualizar aplicación
+    br
+    br

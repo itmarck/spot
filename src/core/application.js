@@ -10,6 +10,7 @@ export class Application {
     description,
     avatar,
     clientId,
+    clientSecret,
     redirectUri,
     authorizedAt,
   }) {
@@ -20,6 +21,7 @@ export class Application {
     this.description = description
     this.avatar = avatar
     this.clientId = clientId
+    this.clientSecret = clientSecret
     this.redirectUri = redirectUri
     this.authorizedAt = authorizedAt
   }
@@ -49,6 +51,7 @@ export class Application {
       description: json['description'],
       avatar: json['avatar'],
       clientId: json['client_id'],
+      clientSecret: json['client_secret'],
       redirectUri: json['redirect_uri'],
       authorizedAt: difference(json['authorized_at']),
     })

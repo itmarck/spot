@@ -1,0 +1,63 @@
+extends layout.pug
+
+block styles
+  link(rel='stylesheet' href='/static/account.css')
+
+block body
+  include header.pug
+
+  h2(content) Aplicaciones de OAuth
+  section(content)
+    h3 Nueva aplicación
+    div(subtitle) Registra una nueva aplicación para poder usar la API de Spot.
+    br
+    br
+    form(action='/account/applications' method='post' visible)
+      div(column)
+        label(for='name') Nombre de la aplicación
+        input#name(name='name' placeholder='Nueva aplicación' required text)
+        span(caption) Algo que los usuarios reconocerán y confiarán.
+      div(column)
+        label(for='description') Breve descripción de la aplicación
+        input#description(name='description' placeholder='Opcional' text)
+      div(column)
+        label(for='url') Callback URL
+        input#url(
+          type='url'
+          name='callback_url'
+          placeholder='https://example.com/callback'
+          required
+          text
+        )
+        span(caption) Se redirigirá a los usuarios a esta URL después de obtener la autorización a tu aplicación.
+      span
+      button(type='submit' block) Registrar aplicación
+    br
+    br
+
+  section(content)
+    h3 Mis aplicaciones
+    div(subtitle) Estas son aplicaciones que has registrado para usar la API de Spot.
+    br
+    div(column)
+      if applications && applications.length > 0
+        br
+        ul(column)
+          each application in applications
+            li
+              div(row left)
+                div(column)
+                  img(src=application.avatar title=application.name avatar)
+                div(column)
+                  span
+                    span= application.name
+                    span(caption)
+                      | &nbsp;⦁&nbsp;
+                      span= application.redirectUri
+                  span(paragraph)= application.description || 'Sin descripción'
+                  a(href='/account/applications/' + application.slug)
+                    button(type='submit' text) Ir a las opciones
+      else
+        span Aún no tienes ningun aplicación registrada.
+      br
+      br

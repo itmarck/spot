@@ -5,13 +5,35 @@ import { sign } from '../shared/jwt.js'
 import { generateClientId } from '../shared/uuid.js'
 import { getUser } from './user.js'
 
-export async function getApplication(clientId, { withOwner } = {}) {
+async function markAsSeen(clientId) {
   const query = `
-    SELECT * FROM application
+    UPDATE application
+    SET seen = 1
     WHERE client_id = '${clientId}'
   `
+  await execute(query)
+}
+
+export async function getApplication(
+  value,
+  { withOwner, withSecret, bySlug } = {},
+) {
+  const criteria = bySlug ? 'slug' : 'client_id'
+  const query = `
+    SELECT * FROM application
+    WHERE ${criteria} = '${value}'
+  `
   const data = await execute(query, { as: 'object' })
+  const notSeen = data && data.seen === 0
   const ownerId = data && data.owner
+  const clientId = data && data.client_id
+
+  if (withSecret) {
+    if (notSeen) {
+      data['client_secret'] = await getApplicationSecret(clientId)
+      await markAsSeen(clientId)
+    }
+  }
 
   if (withOwner && ownerId) {
     data.owner = await getUser(ownerId)
@@ -24,17 +46,27 @@ export async function getApplicationSecret(clientId) {
   return sign(CONTEXTS.secret, { cid: clientId })
 }
 
-export async function createApplication(userId, { name, redirectUri }) {
-  const avatar = '/avatars/1'
+/**
+ * Create a new application for the given user
+ * @param {object} options Application properties
+ * @returns {Promise<string>} The application slug
+ */
+export async function createApplication({
+  userId,
+  name,
+  redirectUri,
+  description = '',
+}) {
   const slug = name && name.toLowerCase().replace(/[^a-z]/g, '')
+  const avatar = `/avatars/${slug.length % 9}`
   const clientId = generateClientId()
   const query = `
-    INSERT INTO application (owner, slug, name, redirect_uri, client_id, avatar)
-    VALUES ('${userId}', '${slug}', '${name}', '${redirectUri}', '${clientId}', '${avatar}')
+    INSERT INTO application (owner, slug, name, description, redirect_uri, client_id, avatar)
+    VALUES ('${userId}', '${slug}', '${name}', '${description}', '${redirectUri}', '${clientId}', '${avatar}')
   `
   await execute(query)
 
-  return await getApplication(clientId, userId)
+  return slug
 }
 
 export async function getAuthorizedApplications(userId) {
@@ -49,6 +81,16 @@ export async function getAuthorizedApplications(userId) {
     INNER JOIN access ON application.id = access.application
     INNER JOIN user ON user.id = application.owner
     WHERE access.user = '${userId}'
+  `
+  const data = await execute(query, { as: 'array' })
+
+  return data && data.map((item) => Application.fromJSON(item))
+}
+
+export async function getCreatedApplications(userId) {
+  const query = `
+    SELECT * FROM application
+    WHERE owner = '${userId}'
   `
   const data = await execute(query, { as: 'array' })
 
