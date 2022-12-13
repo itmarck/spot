@@ -1,3 +1,10 @@
+## 0.3.0 (Dic 13, 2022)
+
+- Register application flow
+- Setup prettier pug plugin
+- Setup styles based on html attributes
+- Basic webpage layout design
+
 ## 0.2.2 (Dic 10, 2022)
 
 - Handle server errors
