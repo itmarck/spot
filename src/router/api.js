@@ -18,7 +18,7 @@ api.get('/user', async function (request, response) {
     return response.status(404).send()
   }
 
-  response.json(user)
+  response.send(user)
 })
 
 api.get('/user/records', async function (request, response) {
@@ -29,7 +29,7 @@ api.get('/user/records', async function (request, response) {
     return response.status(404).send()
   }
 
-  response.json(records)
+  response.send(records)
 })
 
 api.get('/user/records/:name', async function (request, response) {
@@ -41,7 +41,7 @@ api.get('/user/records/:name', async function (request, response) {
     return response.status(404).send()
   }
 
-  response.json(record)
+  response.send(record)
 })
 
 api.post('/user/records/:name', async function (request, response) {
@@ -51,7 +51,7 @@ api.post('/user/records/:name', async function (request, response) {
 
   await setRecord(uid, aid, { name, value })
 
-  response.json({ name, value })
+  response.send({ name, value })
 })
 
 api.delete('/user/records/:name', async function (request, response) {
@@ -65,7 +65,7 @@ api.delete('/user/records/:name', async function (request, response) {
 
   await deleteRecord(uid, aid, { name })
 
-  response.json({ name })
+  response.send({ name })
 })
 
 export default api

@@ -99,7 +99,7 @@ oauth.post('/token', async function ({ body }, response) {
     })
   }
 
-  response.json({
+  response.send({
     token_type: 'Bearer',
     access_token: sign(CONTEXTS.api, payload),
   })
