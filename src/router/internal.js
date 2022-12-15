@@ -3,12 +3,15 @@ import { hasAccess, setAccess } from '../data/access.js'
 import { getApplication } from '../data/application.js'
 import { createSession, getSession } from '../data/session.js'
 import { getOrCreateUser, getUser } from '../data/user.js'
-import { CONTEXTS, KEYS, SESSIONS } from '../shared/constants.js'
-import { sign, verify } from '../shared/jwt.js'
+import { parser } from '../middlewares/parser.js'
+import { CONTEXTS, KEYS } from '../shared/constants.js'
+import { sign } from '../shared/jwt.js'
 import { isEmail, sendMail } from '../shared/mail.js'
 import { canSendCode, isExpired } from '../shared/time.js'
 
 const internal = Router()
+
+internal.use(parser())
 
 internal.post('/code', async function (request, response) {
   const { body: { email } = {} } = request
@@ -74,13 +77,10 @@ internal.post('/session', async function (request, response) {
   response.redirect(returnTo)
 })
 
-internal.post('/access', async function (request, response) {
-  const { query = {}, cookies = {} } = request
+internal.post('/authorize', async function (request, response) {
+  const { query = {}, userId } = request
   const clientId = query['client_id']
   const redirectUri = query['redirect_uri']
-  const internalToken = cookies[KEYS.internalToken]
-  const { uid, context } = verify(internalToken) || {}
-  const userId = context === CONTEXTS.internal && uid
   const application = await getApplication(clientId)
   const applicationId = application && application.id
 

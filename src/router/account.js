@@ -5,21 +5,18 @@ import {
   getAuthorizedApplications,
   getCreatedApplications,
 } from '../data/application.js'
-import { analizeInternalToken } from '../middlewares/token.js'
+import { analyzer } from '../middlewares/analyzer.js'
+import { parser } from '../middlewares/parser.js'
+import { withUser } from '../middlewares/user.js'
 
 const account = Router()
 
-account.use(analizeInternalToken())
+account.use(parser())
+account.use(analyzer({ session: true }))
+account.use(withUser)
 
 account.get('/', async function (request, response) {
-  const loggedIn = response.locals.loggedIn
-  const user = response.locals.user
-  const userId = user && user.id
-
-  if (!loggedIn) {
-    return response.redirect('/login')
-  }
-
+  const userId = request.userId
   const authorizedApplications = await getAuthorizedApplications(userId)
 
   response.render('account', {
@@ -29,14 +26,7 @@ account.get('/', async function (request, response) {
 })
 
 account.get('/applications', async function (request, response) {
-  const loggedIn = response.locals.loggedIn
-  const user = response.locals.user
-  const userId = user && user.id
-
-  if (!loggedIn) {
-    return response.redirect('/login')
-  }
-
+  const userId = request.userId
   const applications = await getCreatedApplications(userId)
 
   response.render('applications', {
@@ -45,26 +35,13 @@ account.get('/applications', async function (request, response) {
   })
 })
 
-function parseBody(body) {
-  return {
-    name: body['name'],
-    description: body['description'],
-    callbackUrl: body['callback_url'],
-  }
-}
-
 account.post('/applications', async function (request, response) {
-  const loggedIn = response.locals.loggedIn
-  const user = response.locals.user
-  const userId = user && user.id
+  const userId = request.userId
+  const name = request.body['name']
+  const description = request.body['description']
+  const callbackUrl = request.body['callback_url']
 
-  if (!loggedIn) {
-    return response.redirect('/login')
-  }
-
-  const { name, description, callbackUrl } = parseBody(request.body)
-
-  if (!name || !callbackUrl) {
+  if (!userId || !name || !callbackUrl) {
     return response.render('error', {
       message: 'Faltan campos obligatorios',
     })
@@ -81,12 +58,7 @@ account.post('/applications', async function (request, response) {
 })
 
 account.get('/applications/:slug', async function (request, response) {
-  const loggedIn = response.locals.loggedIn
   const slug = request.params.slug
-
-  if (!loggedIn) {
-    return response.redirect(`/login?return_to=${request.url}`)
-  }
 
   const application = await getApplication(slug, {
     withSecret: true,
@@ -94,7 +66,9 @@ account.get('/applications/:slug', async function (request, response) {
   })
 
   if (!application) {
-    return response.redirect('/account/applications')
+    return response.render('error', {
+      message: 'Página no encontrada',
+    })
   }
 
   response.render('application', {

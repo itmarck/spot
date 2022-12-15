@@ -1,23 +1,24 @@
 import cors from 'cors'
 import { Router } from 'express'
 import { getAvatarInSvg } from '../data/avatar.js'
-import { analizeInternalToken } from '../middlewares/token.js'
+import { parser } from '../middlewares/parser.js'
+import { withUser } from '../middlewares/user.js'
 import { KEYS } from '../shared/constants.js'
 
 const web = Router()
 
 web.use(cors())
-web.use(analizeInternalToken())
+web.use(parser())
 
-web.get('/', async function (request, response) {
+web.get('/', withUser, async function (request, response) {
   response.render('home', {
     title: 'Welcome to Spot',
   })
 })
 
 web.get('/login', function (request, response) {
-  const returnTo = request.query['return_to'] || '/'
   const loggedIn = response.locals.loggedIn
+  const returnTo = request.query['return_to'] || '/'
   const actionUrl = `/_/session?return_to=${encodeURIComponent(returnTo)}`
 
   if (loggedIn) {
@@ -36,11 +37,13 @@ web.get('/logout', function (request, response) {
 })
 
 web.get('/avatars/:avatar', function (request, response) {
-  const { avatar = 0 } = request.params
+  const avatar = request.params.avatar
+  const position = parseInt(avatar) || 0
+  const svg = getAvatarInSvg({ position })
 
   response.header('Content-Type', 'image/svg+xml')
 
-  response.send(getAvatarInSvg({ position: avatar }))
+  response.send(svg)
 })
 
 export default web

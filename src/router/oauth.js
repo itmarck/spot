@@ -4,25 +4,26 @@ import { URL } from 'url'
 import { hasAccess } from '../data/access.js'
 import { getApplication } from '../data/application.js'
 import { createSession, getSession } from '../data/session.js'
-import { CONTEXTS, KEYS, SESSIONS } from '../shared/constants.js'
+import { parser } from '../middlewares/parser.js'
+import { withUser } from '../middlewares/user.js'
+import { CONTEXTS, SESSIONS } from '../shared/constants.js'
 import { sign, verify } from '../shared/jwt.js'
 import { isExpired } from '../shared/time.js'
 
 const oauth = Router()
 
 oauth.use(cors())
+oauth.use(parser())
 
-oauth.get('/authorize', async function (request, response) {
-  const { query, cookies, originalUrl } = request
-  const clientId = query['client_id']
+oauth.get('/authorize', withUser, async function (request, response) {
+  const { query, originalUrl, userId } = request
+  const loggedIn = response.locals.loggedIn
   const redirectUri = new URL(query['redirect_uri'])
+  const clientId = query['client_id']
   const redirect = encodeURIComponent(redirectUri)
   const returnTo = encodeURIComponent(originalUrl)
-  const internalToken = cookies[KEYS.internalToken]
-  const { uid, context } = verify(internalToken) || {}
   const application = await getApplication(clientId, { withOwner: true })
   const applicationId = application && application.id
-  const loggedIn = uid && context === CONTEXTS.internal
 
   if (!applicationId) {
     return response.render('error', {
@@ -34,10 +35,10 @@ oauth.get('/authorize', async function (request, response) {
     return response.redirect(`/login?return_to=${returnTo}`)
   }
 
-  const granted = await hasAccess({ userId: uid, applicationId })
+  const granted = await hasAccess({ userId, applicationId })
 
   if (granted) {
-    const code = await createSession({ type: SESSIONS.oauth, userId: uid })
+    const code = await createSession({ type: SESSIONS.oauth, userId })
     return response.redirect(`${redirectUri}?code=${code}`)
   }
 
@@ -45,32 +46,32 @@ oauth.get('/authorize', async function (request, response) {
 
   response.render('authorize', {
     title: 'Autorizar aplicación',
-    action: `/_/access?client_id=${clientId}&redirect_uri=${redirect}`,
+    action: `/_/authorize?client_id=${clientId}&redirect_uri=${redirect}`,
     client: clientId,
     application: application,
     redirectDomain: redirectUri && redirectUri.origin,
   })
 })
 
-function parseBody(body = {}) {
-  return {
-    code: body['code'],
-    clientId: body['client_id'],
-    clientSecret: body['client_secret'],
-  }
-}
-
-oauth.post('/token', async function ({ body }, response) {
-  const { clientId, clientSecret, code } = parseBody(body)
+oauth.post('/token', async function (request, response) {
+  const code = request.body['code']
+  const clientId = request.body['client_id']
+  const clientSecret = request.body['client_secret']
   const application = await getApplication(clientId)
+  const applicationId = application && application.id
 
-  if (!application) {
+  if (!applicationId) {
     return response.status(404).send({
       message: 'There is no application with the given client id',
     })
   }
 
-  const applicationId = application && application.id
+  if (!code) {
+    return response.status(400).send({
+      message: 'Missing code',
+    })
+  }
+
   const secretPayload = clientSecret && verify(clientSecret)
   const applicationClientId = application && application.clientId
   const secretClientId = secretPayload && secretPayload.cid
@@ -81,19 +82,12 @@ oauth.post('/token', async function ({ body }, response) {
     })
   }
 
-  if (!code) {
-    return response.status(400).send({
-      message: 'Missing code',
-    })
-  }
-
   const session = await getSession({ type: SESSIONS.oauth, code })
   const userId = session && session.userId
   const createdAt = session && session.createdAt
-  const payload = clientId && userId && { uid: userId, aid: applicationId }
   const hasExpired = createdAt && isExpired(createdAt)
 
-  if (!session || !payload || hasExpired) {
+  if (!session || !userId || hasExpired) {
     return response.status(401).send({
       message: 'Invalid or expired code.',
     })
@@ -101,7 +95,10 @@ oauth.post('/token', async function ({ body }, response) {
 
   response.send({
     token_type: 'Bearer',
-    access_token: sign(CONTEXTS.api, payload),
+    access_token: sign(CONTEXTS.api, {
+      uid: userId,
+      aid: applicationId,
+    }),
   })
 })
 

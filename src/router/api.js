@@ -2,13 +2,15 @@ import cors from 'cors'
 import { Router } from 'express'
 import { deleteRecord, getRecords, setRecord } from '../data/record.js'
 import { getUser } from '../data/user.js'
-import { analyzeContext } from '../middlewares/token.js'
+import { analyzer } from '../middlewares/analyzer.js'
+import { parser } from '../middlewares/parser.js'
 import { CONTEXTS } from '../shared/constants.js'
 
 const api = Router()
 
 api.use(cors())
-api.use(analyzeContext(CONTEXTS.api))
+api.use(parser({ from: CONTEXTS.api }))
+api.use(analyzer({ context: CONTEXTS.api, access: true }))
 
 api.get('/user', async function (request, response) {
   const { payload: { uid } = {} } = request
