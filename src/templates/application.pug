@@ -28,7 +28,9 @@ block body
       br
       span(paragraph) Puedes generar una nueva clave en cualquier momento sin perder las anteriores.
       br
-      form
+      form(action='/account/generate' method='post')
+        input(type='hidden' name='application_id' value=application.id)
+        input(type='hidden' name='slug' value=application.slug)
         button(type='submit' text) Generar nueva clave
       br
 
@@ -36,7 +38,8 @@ block body
     img(src=application.avatar title=application.name avatar large)
     br
     br
-    form(action='/account/applications' method='post' visible)
+    form(method='post' visible)
+      input(type='hidden' name='application_id' value=application.id)
       div(column)
         label(for='name') Nombre de la aplicación
         input#name(

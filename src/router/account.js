@@ -1,10 +1,14 @@
 import { Router } from 'express'
+import { revokeAccess } from '../data/access.js'
 import {
   createApplication,
+  forgetApplication,
   getApplication,
   getAuthorizedApplications,
   getCreatedApplications,
+  updateApplication,
 } from '../data/application.js'
+import { updateUser } from '../data/user.js'
 import { analyzer } from '../middlewares/analyzer.js'
 import { parser } from '../middlewares/parser.js'
 import { withUser } from '../middlewares/user.js'
@@ -23,6 +27,15 @@ account.get('/', async function (request, response) {
     title: 'Mi cuenta',
     authorizedApplications,
   })
+})
+
+account.post('/', async function (request, response) {
+  const userId = request.userId
+  const name = request.body.name
+
+  await updateUser(userId, { name })
+
+  return response.redirect('/account')
 })
 
 account.get('/applications', async function (request, response) {
@@ -59,7 +72,6 @@ account.post('/applications', async function (request, response) {
 
 account.get('/applications/:slug', async function (request, response) {
   const slug = request.params.slug
-
   const application = await getApplication(slug, {
     withSecret: true,
     bySlug: true,
@@ -75,6 +87,39 @@ account.get('/applications/:slug', async function (request, response) {
     title: 'Opciones de la aplicación',
     application,
   })
+})
+
+account.post('/applications/:slug', async function (request, response) {
+  const name = request.body['name']
+  const description = request.body['description']
+  const redirectUri = request.body['callback_url']
+  const applicationId = request.body['application_id']
+
+  await updateApplication(applicationId, {
+    name,
+    description,
+    redirectUri,
+  })
+
+  return response.redirect('/account/applications')
+})
+
+account.post('/generate', async function (request, response) {
+  const applicationId = request.body['application_id']
+  const slug = request.body['slug']
+
+  await forgetApplication(applicationId)
+
+  return response.redirect(`/account/applications/${slug}`)
+})
+
+account.post('/revoke', async function (request, response) {
+  const userId = request.userId
+  const applicationId = request.body['application_id']
+
+  await revokeAccess({ userId, applicationId })
+
+  return response.redirect('/account')
 })
 
 export default account

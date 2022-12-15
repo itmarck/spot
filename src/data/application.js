@@ -69,6 +69,31 @@ export async function createApplication({
   return slug
 }
 
+export async function updateApplication(
+  applicationId,
+  { name, description, redirectUri },
+) {
+  const updatedSlug = name && name.toLowerCase().replace(/[^a-z]/g, '')
+  const query = `
+    UPDATE application
+    SET slug = '${updatedSlug}',
+        name = '${name}',
+        description = '${description}',
+        redirect_uri = '${redirectUri}'
+    WHERE id = '${applicationId}'
+  `
+  await execute(query)
+}
+
+export async function forgetApplication(applicationId) {
+  const query = `
+    UPDATE application
+    SET seen = 0
+    WHERE id = '${applicationId}'
+  `
+  await execute(query)
+}
+
 export async function getAuthorizedApplications(userId) {
   const query = `
     SELECT

@@ -31,6 +31,15 @@ export async function createUser(email, { name, avatar }) {
   return getUser(email, { byEmail: true })
 }
 
+export async function updateUser(userId, { name }) {
+  const query = `
+    UPDATE user
+    SET name = '${name}'
+    WHERE id = '${userId}'
+  `
+  await execute(query)
+}
+
 export async function getOrCreateUser(email = '') {
   const user = await getUser(email, { byEmail: true })
 

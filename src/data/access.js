@@ -22,3 +22,11 @@ export async function setAccess({ userId, applicationId }) {
   `
   await execute(query)
 }
+
+export async function revokeAccess({ userId, applicationId }) {
+  const query = `
+    DELETE FROM access
+    WHERE user = '${userId}' AND application = '${applicationId}'
+  `
+  await execute(query)
+}

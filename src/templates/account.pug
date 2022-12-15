@@ -23,7 +23,7 @@ block body
             button(type='submit' text) Actualizar desde Gravatar
 
   section(content)
-    form(action='/account/profile' method='post' visible)
+    form(method='post' visible)
       div(column)
         label(for='name' row) Nombre
         input#name(
@@ -64,8 +64,8 @@ block body
                     span Aplicacion creada por&nbsp;
                     img(src=application.owner.avatar avatar tiny)
                     span(bold)= application.owner.name
-              form(action='/account/application' method='post')
-                input(type='hidden' name='id' value=application.id)
+              form(action='/account/revoke' method='post')
+                input(type='hidden' name='application_id' value=application.id)
                 button(type='submit' text) Revocar acceso
       else
         span No tienes aplicaciones autorizadas.
