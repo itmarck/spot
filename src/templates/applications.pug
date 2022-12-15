@@ -6,6 +6,10 @@ block styles
 block body
   include header.pug
 
+  section(content breadcrumb)
+    a(href='/account') Mi cuenta
+    a(href='/account/applications' active) Mis aplicaciones
+
   h2(content) Aplicaciones de OAuth
   section(content)
     h3 Nueva aplicación
@@ -42,18 +46,14 @@ block body
     div(column)
       if applications && applications.length > 0
         br
-        ul(column)
+        ul(column grid)
           each application in applications
             li
               div(row left)
                 div(column)
                   img(src=application.avatar title=application.name avatar)
-                div(column)
-                  span
-                    span= application.name
-                    span(caption)
-                      | &nbsp;⦁&nbsp;
-                      span= application.redirectUri
+                div(column hidden)
+                  span= application.name
                   span(paragraph)= application.description || 'Sin descripción'
                   a(href='/account/applications/' + application.slug)
                     button(type='submit' text) Ir a las opciones

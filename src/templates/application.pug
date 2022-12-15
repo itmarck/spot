@@ -6,6 +6,11 @@ block styles
 block body
   include header.pug
 
+  section(content breadcrumb)
+    a(href='/account') Mi cuenta
+    a(href='/account/applications') Mis aplicaciones
+    a(href=`/account/applications/${application.slug}` active)= application.name
+
   h2(content)= application.name
   section(content)
     div Eres el propietario de esta aplicación.

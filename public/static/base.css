@@ -11,6 +11,7 @@
  * Buttons         text block[color]
  * Image           avatar[size]
  * Inputs          text
+ * Others          grid hidden
  * 
  */
 
@@ -53,8 +54,11 @@
 }
 
 [paragraph] {
-  font-size: 0.85rem;
   color: var(--color-text);
+  overflow: hidden;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 [caption] {
@@ -143,13 +147,23 @@ header {
   padding: 0.5rem 0;
 }
 
+[hidden] {
+  overflow: hidden;
+}
+
+[grid] {
+  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+}
+
 #version {
-  position: absolute;
   right: 0;
   bottom: 0;
-  font-size: 0.8rem;
   color: var(--color-soft);
   padding: 5px 12px;
+  position: fixed;
+  font-size: 0.8rem;
 }
 
 #beta {

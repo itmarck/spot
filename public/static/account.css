@@ -33,3 +33,42 @@ ul[column] {
 #secret {
   line-break: anywhere;
 }
+
+[breadcrumb] {
+  gap: 1.5rem;
+  display: flex;
+  font-size: 0.85rem;
+  padding-top: 2rem;
+}
+
+[breadcrumb] a {
+  display: inline;
+  color: var(--color-primary);
+  cursor: default;
+  position: relative;
+  white-space: nowrap;
+}
+
+[breadcrumb] a:hover {
+  text-decoration: underline;
+}
+
+[breadcrumb] a::after {
+  content: '/';
+  display: block;
+  position: absolute;
+  color: var(--color-subtext);
+  top: 0;
+  bottom: 0;
+  right: -1rem;
+}
+
+[breadcrumb] a[active] {
+  color: var(--color-subtext);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[breadcrumb] a[active]::after {
+  content: none;
+}
