@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { COLORS } from '../shared/constants.js'
-import { generateGravatarHash } from '../shared/uuid.js'
+import { generateGravatarHash } from '../shared/crypto.js'
 
 export async function getGravatar(email) {
   try {

@@ -1,7 +1,7 @@
 import { Session } from '../core/session.js'
 import { SESSIONS } from '../shared/constants.js'
 import { execute } from '../shared/database.js'
-import { generateCode } from '../shared/uuid.js'
+import { generateCode } from '../shared/crypto.js'
 
 /**
  * Get session from database by code and session type.
@@ -30,11 +30,11 @@ export async function getSession({ type = SESSIONS.web, code, userId }) {
   return data && Session.fromJSON(data)
 }
 
-export async function createSession({ type = SESSIONS.web, userId }) {
+export async function createSession({ type = SESSIONS.web, userId, verifier }) {
   const code = generateCode(type)
   const query = `
-    INSERT INTO session (user, type, code)
-    VALUES ('${userId}', '${type}', '${code}')
+    INSERT INTO session (user, type, code, code_verifier)
+    VALUES ('${userId}', '${type}', '${code}', '${verifier}')
   `
   await execute(query)
 

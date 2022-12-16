@@ -1,10 +1,8 @@
 import { Router } from 'express'
-import { hasAccess, setAccess } from '../data/access.js'
-import { getApplication } from '../data/application.js'
 import { createSession, getSession } from '../data/session.js'
 import { getOrCreateUser, getUser } from '../data/user.js'
 import { parser } from '../middlewares/parser.js'
-import { CONTEXTS, KEYS, SESSIONS } from '../shared/constants.js'
+import { CONTEXTS, KEYS } from '../shared/constants.js'
 import { sign } from '../shared/jwt.js'
 import { isEmail, sendMail } from '../shared/mail.js'
 import { canSendCode, isExpired } from '../shared/time.js'
@@ -75,35 +73,6 @@ internal.post('/session', async function (request, response) {
   const internalToken = sign(CONTEXTS.internal, { uid: userId })
   response.cookie(KEYS.internalToken, internalToken)
   response.redirect(returnTo)
-})
-
-internal.post('/authorize', async function (request, response) {
-  const { query = {}, userId } = request
-  const clientId = query['client_id']
-  const redirectUri = query['redirect_uri']
-  const application = await getApplication(clientId)
-  const applicationId = application && application.id
-
-  if (!applicationId) {
-    return response.render('error', {
-      message: 'No existe una aplicación con el id "${clientId}"',
-    })
-  }
-
-  if (!userId) {
-    return response.render('error', {
-      message: 'Usuario no encontrado',
-    })
-  }
-
-  const granted = await hasAccess({ userId, applicationId })
-  const code = await createSession({ type: SESSIONS.oauth, userId })
-
-  if (!granted) {
-    await setAccess({ userId, applicationId })
-  }
-
-  response.redirect(`${redirectUri}?code=${code}`)
 })
 
 export default internal

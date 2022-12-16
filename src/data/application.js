@@ -2,7 +2,7 @@ import { Application } from '../core/application.js'
 import { CONTEXTS } from '../shared/constants.js'
 import { execute } from '../shared/database.js'
 import { sign } from '../shared/jwt.js'
-import { generateClientId } from '../shared/uuid.js'
+import { generateClientId } from '../shared/crypto.js'
 import { getUser } from './user.js'
 
 async function markAsSeen(clientId) {

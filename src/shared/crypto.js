@@ -17,7 +17,7 @@ export function generateCode(sessionType = SESSIONS.web) {
     case SESSIONS.web:
       return Math.floor(100000 + Math.random() * 900000)
     case SESSIONS.oauth:
-      return randomUUID()
+      return randomUUID().replace(/-/g, '')
     default:
       return randomUUID()
   }
