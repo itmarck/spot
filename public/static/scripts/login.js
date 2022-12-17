@@ -54,7 +54,7 @@ async function sendCode({ email }) {
   const response = await fetch(url, { method: 'POST', body, headers })
   setLoading(false)
 
-  return await response.send()
+  return await response.json()
 }
 
 function openPopup({ message = '', description, duration = 3000 }) {

@@ -11,7 +11,7 @@
  * Buttons         text block[color]
  * Image           avatar[size]
  * Inputs          text
- * Others          grid hidden divider card gap
+ * Others          grid hidden divider card gap ellipsis break
  * 
  */
 
@@ -63,10 +63,7 @@
 
 [paragraph] {
   color: var(--color-text);
-  overflow: hidden;
   font-size: 0.85rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 [caption] {
@@ -84,6 +81,12 @@
 
 [bold] {
   font-weight: bold;
+}
+
+h2 + [subtitle],
+h3 + [subtitle],
+input[text] + [caption] {
+  padding-top: 0.5rem;
 }
 
 button[text] {
@@ -115,7 +118,7 @@ button[block] {
 
 button[block][color='none'] {
   color: inherit;
-  background-color: var(--color-background);
+  background-color: var(--color-soft);
   border: var(--border-soft);
 }
 
@@ -143,11 +146,14 @@ img[avatar][large] {
 
 input[text] {
   padding: 5px 12px;
-  border: var(--border-soft);
+  border: var(--border-background);
   border-radius: 6px;
+  background-color: var(--color-background);
 }
 
 label[for] {
+  font-size: 0.85rem;
+  font-weight: bold;
   margin-bottom: 4px;
 }
 
@@ -166,12 +172,26 @@ header {
 
 [card] {
   padding: 1rem;
-  border: var(--border-soft);
   border-radius: 0.5rem;
+  background-color: var(--color-surface);
 }
 
 [gap] {
   gap: 1rem;
+}
+
+[gap][small] {
+  gap: 0.25rem;
+}
+
+[ellipsis] {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+[break] {
+  line-break: anywhere;
 }
 
 [divider] {

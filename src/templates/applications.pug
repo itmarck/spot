@@ -1,22 +1,21 @@
 extends layout.pug
 
 block styles
-  link(rel='stylesheet' href='/static/account.css')
+  link(rel='stylesheet' href='/static/breadcrumb.css')
 
 block body
   include header.pug
 
-  section(content breadcrumb)
-    a(href='/account') Mi cuenta
-    a(href='/account/applications' active) Mis aplicaciones
-
-  h2(content) Aplicaciones de OAuth
   section(content)
-    h3 Nueva aplicación
+    nav(breadcrumb)
+      a(href='/account') Mi cuenta
+      a(href='/account/applications' active) Mis aplicaciones
+
+  section(content)
+    h2 Nueva aplicación
     div(subtitle) Registra una nueva aplicación para poder usar la API de Spot.
     br
-    br
-    form(action='/account/applications' method='post' column gap narrow)
+    form(action='/account/applications' method='post' card column gap narrow)
       div(column)
         label(for='name') Nombre de la aplicación
         input#name(name='name' placeholder='Nueva aplicación' required text)
@@ -36,28 +35,36 @@ block body
         span(caption) Se redirigirá a los usuarios a esta URL después de obtener la autorización a tu aplicación.
       span
       button(type='submit' block) Registrar aplicación
-    br
-    br
-
+  br
+  br
   section(content)
-    h3 Mis aplicaciones
+    h2 Mis aplicaciones
     div(subtitle) Estas son aplicaciones que has registrado para usar la API de Spot.
-    br
     div(column)
       if applications && applications.length > 0
         br
         ul(column grid gap)
           each application in applications
-            li
-              div(row left)
-                div(column)
-                  img(src=application.avatar title=application.name avatar)
-                div(column hidden)
-                  span= application.name
-                  span(paragraph)= application.description || 'Sin descripción'
-                  a(href='/account/applications/' + application.slug)
-                    button(type='submit' text) Ir a las opciones
+            li(card)
+              a(href='/account/applications/' + application.slug)
+                div(row left)
+                  div(column)
+                    img(
+                      src=application.avatar
+                      title=application.name
+                      avatar
+                      small
+                    )
+                  div(column hidden)
+                    span= application.name
+                    div(caption ellipsis)= application.description || 'Sin descripción'
       else
-        span Aún no tienes ningun aplicación registrada.
-      br
-      br
+        br
+        div(card center)
+          br
+          br
+          div(subtitle) Aún no tienes ningun aplicación registrada.
+          br
+          br
+  br
+  br

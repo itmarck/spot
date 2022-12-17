@@ -3,9 +3,10 @@
 
   position: fixed;
   color: var(--color-text);
-  background-color: var(--color-background);
+  background-color: var(--color-soft);
   border: var(--border-soft);
   border-radius: 0.5rem;
+  font-size: 0.85rem;
   top: 0;
   left: 0;
   right: 0;

@@ -1,49 +1,23 @@
 extends layout.pug
 
 block styles
-  link(rel='stylesheet' href='/static/account.css')
+  link(rel='stylesheet' href='/static/breadcrumb.css')
 
 block body
   include header.pug
 
-  section(content breadcrumb)
-    a(href='/account') Mi cuenta
-    a(href='/account/applications') Mis aplicaciones
-    a(href=`/account/applications/${application.slug}` active)= application.name
-
-  h2(content)= application.name
   section(content)
-    div Eres el propietario de esta aplicación.
-    br
-  section(content)
-    h3 Client ID
-    div(subtitle) Identificador de tu aplicación.
-    br
-    div= application.clientId
-  section(content)
-    h3 Client secret
-    div(subtitle) Clave secreta para autenticarte como aplicación.
-    br
-    div
-      if application.clientSecret
-        span#secret= application.clientSecret
-      else
-        span ********
-      br
-      br
-      span(paragraph) Puedes generar una nueva clave en cualquier momento sin perder las anteriores.
-      br
-      form(action='/account/generate' method='post')
-        input(type='hidden' name='application_id' value=application.id)
-        input(type='hidden' name='slug' value=application.slug)
-        button(type='submit' text) Generar nueva clave
-      br
+    nav(breadcrumb)
+      a(href='/account') Mi cuenta
+      a(href='/account/applications') Mis aplicaciones
+      a(href=`/account/applications/${application.slug}` active)= application.name
 
   section(content)
-    img(src=application.avatar title=application.name avatar large)
+    h2= application.name
+    div(subtitle) Eres el propietario de esta aplicación.
     br
-    br
-    form(method='post' column gap narrow)
+    form(method='post' card column gap narrow)
+      img(src=application.avatar title=application.name avatar large)
       input(type='hidden' name='application_id' value=application.id)
       div(column)
         label(for='name') Nombre de la aplicación
@@ -76,5 +50,36 @@ block body
         span(caption) Se redirigirá a los usuarios a esta URL después de obtener la autorización a tu aplicación.
       span
       button(type='submit' block) Actualizar aplicación
-    br
-    br
+  br
+  br
+  section(content)
+    h2 Privacidad
+    div(subtitle) Esta información es privada. No la compartas con nadie.
+  br
+  section(content)
+    div(card)
+      h3 Client ID
+      div(subtitle) Identificador de tu aplicación.
+      br
+      div= application.clientId
+  br
+  section(content)
+    div(card)
+      h3 Client secret
+      div(subtitle) Clave secreta para autenticarte como aplicación.
+      br
+      div
+        if application.clientSecret
+          span#secret(break)= application.clientSecret
+        else
+          span ********
+        br
+        br
+        span(paragraph) Puedes generar una nueva clave en cualquier momento sin perder las anteriores.
+        br
+        form(action='/account/generate' method='post')
+          input(type='hidden' name='application_id' value=application.id)
+          input(type='hidden' name='slug' value=application.slug)
+          button(type='submit' text) Generar nueva clave
+  br
+  br

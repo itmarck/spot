@@ -1,33 +1,8 @@
-span[caption],
-div[subtitle] {
-  padding-top: 0.5rem;
-}
-
-h2[content] {
-  margin-top: 3.5rem;
-}
-
-section[content] {
-  margin-top: 1.5rem;
-}
-
-button[text] {
-  padding-top: 0.25rem;
-}
-
-div[caption][row] {
-  gap: 0.25rem;
-}
-
-#secret {
-  line-break: anywhere;
-}
-
 [breadcrumb] {
-  gap: 1.5rem;
+  gap: 2rem;
   display: flex;
   font-size: 0.85rem;
-  padding-top: 2rem;
+  margin: 2rem 0;
 }
 
 [breadcrumb] a {
@@ -43,13 +18,13 @@ div[caption][row] {
 }
 
 [breadcrumb] a::after {
-  content: '/';
+  content: '▶';
   display: block;
   position: absolute;
-  color: var(--color-subtext);
+  color: var(--color-soft);
   top: 0;
   bottom: 0;
-  right: -1rem;
+  right: -1.4rem;
 }
 
 [breadcrumb] a[active] {

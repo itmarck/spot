@@ -4,13 +4,15 @@ block styles
   link(rel='stylesheet' href='/static/form.css')
 
 block body
-  main
+  main(content narrow center)
+    br
+    br
     header
       h1 Spot
     p
-    form
+    form(column gap)
       div(column left)
-        span(caption bold) Detalle del error
+        span(caption bold) Error
         span #{message}
       span
       div(column)
@@ -20,3 +22,5 @@ block body
           color='none'
           onclick='history.back()'
         ) Regresar
+    br
+    br
