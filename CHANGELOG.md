@@ -1,3 +1,8 @@
+## 0.5.0 (Dic 17, 2022)
+
+- Light theme redisign
+- Update application avatar from web
+
 ## 0.4.0 (Dic 16, 2022)
 
 - Authorization code (With PKCE)
