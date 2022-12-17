@@ -20,6 +20,10 @@ block body
       img(src=application.avatar title=application.name avatar large)
       input(type='hidden' name='application_id' value=application.id)
       div(column)
+        label(for='avatar') Logo de la aplicación
+        input#avatar(name='avatar' placeholder='https://example.com/logo' text)
+        span(caption) URL pública de la imagen. No se actualizará si lo dejas vacío.
+      div(column)
         label(for='name') Nombre de la aplicación
         input#name(
           name='name'

@@ -11,7 +11,7 @@
  * Buttons         text block[color]
  * Image           avatar[size]
  * Inputs          text
- * Others          grid hidden divider card gap ellipsis break
+ * Others          grid hidden divider card gap ellipsis break wrap
  * 
  */
 
@@ -181,7 +181,8 @@ header {
 }
 
 [gap][small] {
-  gap: 0.25rem;
+  row-gap: 0;
+  column-gap: 0.25rem;
 }
 
 [ellipsis] {
@@ -192,6 +193,10 @@ header {
 
 [break] {
   line-break: anywhere;
+}
+
+[wrap] {
+  flex-wrap: wrap;
 }
 
 [divider] {

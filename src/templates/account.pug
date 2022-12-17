@@ -10,7 +10,7 @@ block body
       img(src=user.avatar alt='Avatar' avatar large)
       div(column left)
         span= user.name
-        span(subtitle)= user.email
+        span(subtitle break)= user.email
         span
         div(row)
           form(action='/logout')
@@ -49,14 +49,14 @@ block body
       br
       ul(column gap)
         each application in authorizedApplications
-          li(row card)
+          li(card row wrap)
             div(row)
               div(column)
                 img(src=application.avatar title=application.name avatar)
               div(column)
                 span= application.name
                 div(paragraph)= application.authorizedAt
-                div(caption row left gap small title=application.owner.email)
+                div(caption row left gap small wrap)
                   span Aplicacion creada por&nbsp;
                   img(src=application.owner.avatar alt='Avatar' avatar tiny)
                   span(bold)= application.owner.name
@@ -68,7 +68,7 @@ block body
       div(card center)
         br
         br
-        div(subtitle) No tienes aplicaciones autorizadas.
+        div(subtitle) No tienes aplicaciones autorizadas
         br
         br
   br

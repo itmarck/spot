@@ -91,12 +91,14 @@ account.get('/applications/:slug', async function (request, response) {
 
 account.post('/applications/:slug', async function (request, response) {
   const name = request.body['name']
+  const avatar = request.body['avatar']
   const description = request.body['description']
   const redirectUri = request.body['callback_url']
   const applicationId = request.body['application_id']
 
   await updateApplication(applicationId, {
     name,
+    avatar,
     description,
     redirectUri,
   })

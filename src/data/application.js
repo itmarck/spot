@@ -74,13 +74,15 @@ export async function createApplication({
 
 export async function updateApplication(
   applicationId,
-  { name, description, redirectUri },
+  { name, avatar, description, redirectUri },
 ) {
   const updatedSlug = name && name.toLowerCase().replace(/[^a-z]/g, '')
+  const avatarQuery = avatar ? `avatar = '${avatar}',` : ''
   const query = `
     UPDATE application
     SET slug = '${updatedSlug}',
         name = '${name}',
+        ${avatarQuery}
         description = '${description}',
         redirect_uri = '${redirectUri}'
     WHERE id = '${applicationId}'
