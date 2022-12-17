@@ -1,3 +1,10 @@
+## 0.4.0 (Dic 16, 2022)
+
+- Authorization code (With PKCE)
+- Account page design
+- Parser and analyzer (middlewares)
+- Logo redesign
+
 ## 0.3.0 (Dic 13, 2022)
 
 - Register application flow
