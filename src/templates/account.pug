@@ -15,7 +15,7 @@ block body
     div(row left)
       img(src=user.avatar alt='Avatar' avatar large)
       div(column left)
-        span(bold)= user.name
+        span= user.name
         span(subtitle)= user.email
         span
         div(row)
@@ -23,7 +23,7 @@ block body
             button(type='submit' text) Actualizar desde Gravatar
 
   section(content)
-    form(method='post' visible)
+    form(method='post' column gap narrow)
       div(column)
         label(for='name' row) Nombre
         input#name(
@@ -51,7 +51,7 @@ block body
           span a tu cuenta.
         br
         br
-        ul(column)
+        ul(column gap)
           each application in authorizedApplications
             li(row)
               div(row)

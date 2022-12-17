@@ -2,7 +2,7 @@
  * Styles based on html attribute
  * 
  * [color=""]      primary none (html element required)
- * [area=""]       wide content
+ * [area]          wide content narrow
  * [direction]     row column
  * [alignment]     left right
  * [typography]    subtitle paragraph caption link
@@ -11,7 +11,7 @@
  * Buttons         text block[color]
  * Image           avatar[size]
  * Inputs          text
- * Others          grid hidden divider
+ * Others          grid hidden divider card gap
  * 
  */
 
@@ -33,6 +33,10 @@
   justify-content: flex-start;
 }
 
+[center] {
+  text-align: center;
+}
+
 [right] {
   text-align: right;
   justify-content: flex-start;
@@ -46,7 +50,11 @@
 }
 
 [content] {
-  max-width: 64rem;
+  max-width: 56rem;
+}
+
+[narrow] {
+  max-width: 24rem;
 }
 
 [subtitle] {
@@ -152,9 +160,18 @@ header {
 }
 
 [grid] {
-  gap: 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+[card] {
+  padding: 1rem;
+  border: var(--border-soft);
+  border-radius: 0.5rem;
+}
+
+[gap] {
+  gap: 1rem;
 }
 
 [divider] {

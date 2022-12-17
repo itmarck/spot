@@ -1,21 +1,20 @@
 extends layout.pug
 
-block styles
-  link(rel='stylesheet' href='/static/form.css')
-
 block body
-  main
+  main(content narrow center)
+    br
+    br
     img(src=application.avatar title=application.name avatar large)
     header
       h1 Autorizar #{application.name}
+    br
     p
       span
-        span
-          a(href=redirectDomain link) #{application.name}&nbsp;
-        span de #{application.owner.name}
+        a(href=redirectDomain link) #{application.name}&nbsp;
       br
       span quiere acceder a tu cuenta de Spot
-    form(method='post')
+    br
+    form(method='post' card column gap)
       div(row left divider)
         img(src=user.avatar alt=user.name avatar)
         div(column left)
@@ -34,5 +33,9 @@ block body
       div(column)
         span(caption) Después de autorizar se redireccionará a
         span(caption bold) #{redirectDomain}
-    p
-      span(caption) La aplicación no es propiedad ni está operada por Spot
+    br
+    div(column)
+      span(caption) Esta aplicación es propiedad de #{application.owner.name}
+      span(caption) No es operada ni supervisada por Spot
+    br
+    br

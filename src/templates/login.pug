@@ -1,18 +1,24 @@
 extends layout.pug
 
 block styles
-  link(rel='stylesheet' href='/static/form.css')
   link(rel='stylesheet' href='/static/popup.css')
 
 block scripts
   script(src='/static/scripts/login.js')
 
 block body
-  main
+  main(content narrow center)
+    br
+    br
     header
       h1 Spot
-    p El código de acceso será enviado al correo, no se necesita registro previo.
-    form(method='post' action=action)
+    br
+    p
+      span El código de acceso será enviado al
+      br
+      span correo. No se necesita registro previo.
+    br
+    form(method='post' action=action card column gap)
       div(column)
         label(for='email' row)
           span Correo
@@ -38,7 +44,8 @@ block body
       span
       div(column)
         button(type='submit' block) Acceder
-    footer
-      a(href='/' target='_blank') Inicio
-      a(href='/' target='_blank') OAuth
-      a(href='/' target='_blank') Contacto
+    br
+    div(column)
+      span(caption) El código de acceso vence en 24 horas
+    br
+    br

@@ -16,7 +16,7 @@ block body
     div(subtitle) Registra una nueva aplicación para poder usar la API de Spot.
     br
     br
-    form(action='/account/applications' method='post' visible)
+    form(action='/account/applications' method='post' column gap narrow)
       div(column)
         label(for='name') Nombre de la aplicación
         input#name(name='name' placeholder='Nueva aplicación' required text)
@@ -46,7 +46,7 @@ block body
     div(column)
       if applications && applications.length > 0
         br
-        ul(column grid)
+        ul(column grid gap)
           each application in applications
             li
               div(row left)

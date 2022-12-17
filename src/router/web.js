@@ -12,7 +12,7 @@ web.use(parser())
 
 web.get('/', withUser, async function (request, response) {
   response.render('home', {
-    title: 'Welcome to Spot',
+    title: 'Bienvenido a Spot',
   })
 })
 
