@@ -11,7 +11,7 @@
  * Buttons         text block[color]
  * Image           avatar[size]
  * Inputs          text
- * Others          grid hidden
+ * Others          grid hidden divider
  * 
  */
 
@@ -155,6 +155,21 @@ header {
   gap: 1rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(256px, 1fr));
+}
+
+[divider] {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+[divider]::after {
+  content: '';
+  display: block;
+  position: absolute;
+  background-color: var(--color-soft);
+  width: 100%;
+  height: 1px;
+  bottom: -1rem;
 }
 
 #version {

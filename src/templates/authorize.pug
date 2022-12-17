@@ -5,16 +5,22 @@ block styles
 
 block body
   main
+    img(src=application.avatar title=application.name avatar large)
     header
-      h1 Spot
+      h1 Autorizar #{application.name}
     p
       span
         span
-          a(href='#' link) #{application.name}&nbsp;
+          a(href=redirectDomain link) #{application.name}&nbsp;
         span de #{application.owner.name}
       br
       span quiere acceder a tu cuenta de Spot
     form(method='post')
+      div(row left divider)
+        img(src=user.avatar alt=user.name avatar)
+        div(column left)
+          span= user.name
+          span(caption)= user.email
       div(column left)
         span Datos de tu cuenta
         span(subtitle) Correo, nombre y foto (solo lectura)
@@ -30,7 +36,3 @@ block body
         span(caption bold) #{redirectDomain}
     p
       span(caption) La aplicación no es propiedad ni está operada por Spot
-    footer
-      a(href='/' target='_blank') Cuenta
-      a(href='/' target='_blank') OAuth
-      a(href='/' target='_blank') Contacto

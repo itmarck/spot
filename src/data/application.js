@@ -36,7 +36,10 @@ export async function getApplication(
   }
 
   if (withOwner && ownerId) {
-    data.owner = await getUser(ownerId)
+    const owner = await getUser(ownerId)
+    data['owner_name'] = owner.name
+    data['owner_email'] = owner.email
+    data['owner_avatar'] = owner.avatar
   }
 
   return data && Application.fromJSON(data)
