@@ -1,0 +1,60 @@
+extends layout.pug
+
+block styles
+  link(rel='stylesheet' href='/static/markdown.css')
+
+block body
+  include header.pug
+
+  main(content)
+    h1 Documentación
+    ul
+      li
+        a(href=`#${docs.introduction.id}`)= docs.introduction.title
+        ul
+          li: a(href='#create-application') Crear una aplicación
+          li: a(href='#api-usage') Uso de la API
+      li
+        a(href=`#${docs.authorization.id}`)= docs.authorization.title
+        ul
+          each item in docs.authorization.endpoints
+            li: a(href=`#${item.id}`)= item.title
+      li
+        a(href=`#${docs.api.id}`)= docs.api.title
+        ul
+          each item in docs.api.endpoints
+            li: a(href=`#${item.id}`)= item.title
+
+    h2(id=docs.introduction.id)= docs.introduction.title
+    p= docs.introduction.description
+
+    h3#create-application Crear una aplicación
+    p: span Para crear una aplicación ve a la sección de <a href='/account/applications' link>mis aplicaciones de OAuth</a> y registra una nueva aplicación.
+    p: span Una vez creada se mostrarán unas propiedades únicas de la aplicación como <code>client_id</code> y <code>client_secret</code> que son necesarias para hacer las peticiones de autorización, dependiendo del flujo elegido. Para más información, revisa la sección de <a href='#authorization' link>Autorización</a>.
+
+    h3#api-usage Uso de la API
+    p: span Dentro de la API usamos <a href='https://oauth.net/2/bearer-tokens/' link pointer target='_blank'>Bearer Token</a> para identificar al usuario autenticado en cada petición. Es necesario enviar el token de acceso a través de la cabecera <code>Authorization</code> siguiendo el formato estándar.
+
+    pre: code Bearer eyJhbGciOiJIUzI1NiIs...
+
+    p Todas las rutas descritas en esta documentación están basadas en la siguiente URL.
+
+    pre: code= location.origin
+
+    h2(id=docs.authorization.id)= docs.authorization.title
+    p= docs.authorization.description
+
+    p: span El flujo descrito está basado en <a href='https://oauth.net/2/pkce/' link pointer target='_blank'>Authorization Code (With PKCE)</a>, donde se envia un código de verificación en el endpoint de autorización, pero el servidor también soporta el flujo de <a href='https://oauth.net/2/grant-types/authorization-code/' link pointer target='_blank'>Authorization Code</a>. La diferencia está en que será requerido enviar el <code>client_secret</code> al momento de solicitar el token de acceso y el código de verificación queda de manera opcional.
+
+    each endpoint in docs.authorization.endpoints
+      include endpoint.pug
+
+    h2(id=docs.api.id)= docs.api.title
+    p= docs.api.description
+
+    each endpoint in docs.api.endpoints
+      - hostname = location.api
+      include endpoint.pug
+    br
+    br
+    br

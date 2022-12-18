@@ -1,9 +1,12 @@
 import cors from 'cors'
 import { Router } from 'express'
 import { getAvatarInSvg } from '../data/avatar.js'
+import { authorization, reference, starter } from '../data/documentation.js'
 import { parser } from '../middlewares/parser.js'
 import { withUser } from '../middlewares/user.js'
+import { host } from '../shared/configuration.js'
 import { KEYS } from '../shared/constants.js'
+import api from './api.js'
 
 const web = Router()
 
@@ -15,6 +18,23 @@ web.use(parser())
 web.get('/', withUser, async function (request, response) {
   response.render('home', {
     title: 'Bienvenido a Spot',
+  })
+})
+
+web.get('/docs', withUser, function (request, response) {
+  const hostname = host()
+
+  response.locals.location = {}
+  response.locals.location.origin = hostname
+  response.locals.location.api = `${api}`
+
+  return response.render('documentation', {
+    title: 'Documentación',
+    docs: {
+      introduction: starter,
+      authorization: authorization,
+      api: reference,
+    },
   })
 })
 

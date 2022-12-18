@@ -37,6 +37,11 @@ a {
   color: inherit;
   display: inherit;
   text-decoration: none;
+  cursor: default;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 img {
@@ -88,4 +93,35 @@ ul {
 li {
   margin: 0;
   padding: 0;
+}
+
+code {
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--color-soft);
+}
+
+pre:has(code) {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-surface);
+}
+
+pre:has(code) code {
+  margin: unset;
+  padding: unset;
+  background-color: unset;
+}
+
+mark {
+  margin-right: 1rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  color: var(--color-background);
+  background-color: var(--color-primary);
+}
+
+footer {
+  background-color: var(--color-surface);
 }

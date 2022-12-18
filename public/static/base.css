@@ -11,7 +11,7 @@
  * Buttons         text block[color]
  * Image           avatar[size]
  * Inputs          text
- * Others          grid hidden divider card gap ellipsis break wrap
+ * Others          grid hidden divider card gap ellipsis break wrap pointer
  * 
  */
 
@@ -39,7 +39,7 @@
 
 [right] {
   text-align: right;
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 [wide],
@@ -73,6 +73,11 @@
 
 [link] {
   color: var(--color-primary);
+  cursor: default;
+}
+
+[link]:hover {
+  text-decoration: underline;
 }
 
 [normal] {
@@ -83,6 +88,7 @@
   font-weight: bold;
 }
 
+h1 + [subtitle],
 h2 + [subtitle],
 h3 + [subtitle],
 input[text] + [caption] {
@@ -199,6 +205,10 @@ header {
   flex-wrap: wrap;
 }
 
+[pointer] {
+  cursor: pointer;
+}
+
 [divider] {
   position: relative;
   margin-bottom: 1rem;
@@ -224,15 +234,16 @@ header {
 }
 
 #beta {
-  font-size: 0.8rem;
   color: var(--color-text);
   background-color: var(--color-background);
   border: var(--border-soft);
+  font-size: 0.6rem;
   position: fixed;
-  top: 1rem;
-  right: -3rem;
-  padding: 5px 4rem;
+  top: 0.5rem;
+  right: -3.8rem;
+  padding: 2px 4rem;
   transform: rotate(45deg);
   text-transform: uppercase;
   opacity: 0.6;
+  z-index: 0;
 }

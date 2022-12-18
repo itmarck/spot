@@ -1,13 +1,13 @@
 header
   div(content)
     div(row)
-      a(href='/' title='Spot')
+      a(href='/' title='Spot' pointer)
         include ../../public/favicon.svg
       div(row)
         if loggedIn
           a(href='/account')
             div(row)
-              span(right) #{user.name}
+              span(right) Mi cuenta
               img(src=user.avatar alt='Avatar' avatar small)
         else
           a(href='/login' link) Acceder

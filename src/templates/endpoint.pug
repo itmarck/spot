@@ -1,0 +1,18 @@
+h3(id=endpoint.id)= endpoint.title
+p: span !{endpoint.description}
+pre(ellipsis title=endpoint.path)
+  mark= endpoint.method
+  span #{hostname}#{endpoint.path}
+if endpoint.params
+  h4 Parámetros
+  each param in endpoint.params
+    div(column)
+      div(row left gap small)
+        code= param.name
+        div(paragraph)= param.type
+        div(caption) (#{param.place})
+      span !{param.description}
+      br
+if endpoint.response
+  h4 Respuesta
+  pre: code= JSON.stringify(endpoint.response, null, 2)
