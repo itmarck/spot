@@ -8,10 +8,10 @@ import { hasAccess } from '../data/access.js'
  */
 export function analyzer({ context, access, session } = {}) {
   return async function (request, response, next) {
-    const here = request.originalUrl
     const userId = request.userId
     const payload = request.payload
     const loggedIn = response.locals.loggedIn
+    const encodedUrl = encodeURIComponent(request.originalUrl)
     const tokenContext = payload && payload.context
     const applicationId = payload && payload.aid
 
@@ -20,7 +20,7 @@ export function analyzer({ context, access, session } = {}) {
     }
 
     if (session && !loggedIn) {
-      return response.redirect(`/login?return_to=${here}`)
+      return response.redirect(`/login?return_to=${encodedUrl}`)
     }
 
     if (access) {

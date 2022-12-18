@@ -21,6 +21,7 @@ oauth.get('/authorize', withUser, async function (request, response) {
   const clientId = request.query['client_id']
   const redirectUri = request.query['redirect_uri']
   const codeChallenge = request.query['code_challenge']
+  const encodedUrl = encodeURIComponent(request.originalUrl)
   const application = await getApplication(clientId, { withOwner: true })
   const applicationId = application && application.id
 
@@ -31,7 +32,7 @@ oauth.get('/authorize', withUser, async function (request, response) {
   }
 
   if (!loggedIn) {
-    return response.redirect(`/login?return_to=${request.originalUrl}`)
+    return response.redirect(`/login?return_to=${encodedUrl}`)
   }
 
   const verifier = codeChallenge

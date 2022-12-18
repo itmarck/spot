@@ -20,8 +20,7 @@ export async function getSession({ type = SESSIONS.web, code, userId }) {
   const query = `
     SELECT * FROM session
     WHERE type = '${type}'
-    AND code = '${code}'
-    OR user = '${userId}'
+    AND (code = '${code}' OR user = '${userId}')
     ORDER BY id DESC
     LIMIT 1
   `
@@ -32,9 +31,10 @@ export async function getSession({ type = SESSIONS.web, code, userId }) {
 
 export async function createSession({ type = SESSIONS.web, userId, verifier }) {
   const code = generateCode(type)
+  const codeVerifier = verifier || ''
   const query = `
     INSERT INTO session (user, type, code, code_verifier)
-    VALUES ('${userId}', '${type}', '${code}', '${verifier}')
+    VALUES ('${userId}', '${type}', '${code}', '${codeVerifier}')
   `
   await execute(query)
 
