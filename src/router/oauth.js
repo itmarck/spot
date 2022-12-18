@@ -8,6 +8,7 @@ import { withUser } from '../middlewares/user.js'
 import { CONTEXTS, SESSIONS } from '../shared/constants.js'
 import { sign, verify } from '../shared/jwt.js'
 import { isExpired } from '../shared/time.js'
+import { parseUrl } from '../shared/url.js'
 
 const oauth = Router()
 
@@ -34,13 +35,13 @@ oauth.get('/authorize', withUser, async function (request, response) {
   }
 
   const verifier = codeChallenge
-  const redirectUrl = new URL(redirectUri)
+  const redirectUrl = parseUrl(redirectUri, application.redirectUri)
   const granted = await hasAccess({ userId, applicationId })
 
   if (granted) {
     const code = await createSession({ type: SESSIONS.oauth, userId, verifier })
 
-    redirectUrl.searchParams.append('code', code)
+    redirectUrl.searchParams.set('code', code)
 
     return response.redirect(redirectUrl.href)
   }
@@ -75,7 +76,7 @@ oauth.post('/authorize', async function (request, response) {
   }
 
   const verifier = codeChallenge
-  const redirectUrl = new URL(redirectUri)
+  const redirectUrl = parseUrl(redirectUri, application.redirectUri)
   const granted = await hasAccess({ userId, applicationId })
   const code = await createSession({ type: SESSIONS.oauth, userId, verifier })
 
@@ -83,7 +84,7 @@ oauth.post('/authorize', async function (request, response) {
     await setAccess({ userId, applicationId })
   }
 
-  redirectUrl.searchParams.append('code', code)
+  redirectUrl.searchParams.set('code', code)
 
   return response.redirect(redirectUrl.href)
 })

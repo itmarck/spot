@@ -12,6 +12,7 @@ import { updateUser } from '../data/user.js'
 import { analyzer } from '../middlewares/analyzer.js'
 import { parser } from '../middlewares/parser.js'
 import { withUser } from '../middlewares/user.js'
+import { parseUrl } from '../shared/url.js'
 
 const account = Router()
 
@@ -53,6 +54,7 @@ account.post('/applications', async function (request, response) {
   const name = request.body['name']
   const description = request.body['description']
   const callbackUrl = request.body['callback_url']
+  const redirectUri = parseUrl(callbackUrl)
 
   if (!userId || !name || !callbackUrl) {
     return response.render('error', {
@@ -60,11 +62,17 @@ account.post('/applications', async function (request, response) {
     })
   }
 
+  if (!redirectUri) {
+    return response.render('error', {
+      message: 'Callback URL no es válido',
+    })
+  }
+
   const slug = await createApplication({
     userId,
     name,
     description,
-    redirectUri: callbackUrl,
+    redirectUri,
   })
 
   return response.redirect(`/account/applications/${slug}`)
@@ -93,8 +101,15 @@ account.post('/applications/:slug', async function (request, response) {
   const name = request.body['name']
   const avatar = request.body['avatar']
   const description = request.body['description']
-  const redirectUri = request.body['callback_url']
+  const callbackUrl = request.body['callback_url']
   const applicationId = request.body['application_id']
+  const redirectUri = parseUrl(callbackUrl)
+
+  if (!redirectUri) {
+    return response.render('error', {
+      message: 'Callback URL no es válido',
+    })
+  }
 
   await updateApplication(applicationId, {
     name,
