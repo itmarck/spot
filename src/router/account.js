@@ -16,6 +16,8 @@ import { parseUrl } from '../shared/url.js'
 
 const account = Router()
 
+account.toString = () => '/account'
+
 account.use(parser())
 account.use(analyzer({ session: true }))
 account.use(withUser)

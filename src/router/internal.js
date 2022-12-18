@@ -9,6 +9,8 @@ import { canSendCode, isExpired } from '../shared/time.js'
 
 const internal = Router()
 
+internal.toString = () => '/_'
+
 internal.use(parser())
 
 internal.post('/code', async function (request, response) {

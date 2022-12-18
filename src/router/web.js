@@ -7,6 +7,8 @@ import { KEYS } from '../shared/constants.js'
 
 const web = Router()
 
+web.toString = () => '/'
+
 web.use(cors())
 web.use(parser())
 

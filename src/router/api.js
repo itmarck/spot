@@ -8,6 +8,8 @@ import { CONTEXTS } from '../shared/constants.js'
 
 const api = Router()
 
+api.toString = () => '/api/v1'
+
 api.use(cors())
 api.use(parser({ from: CONTEXTS.api }))
 api.use(analyzer({ context: CONTEXTS.api, access: true }))

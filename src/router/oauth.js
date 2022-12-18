@@ -12,6 +12,8 @@ import { parseUrl } from '../shared/url.js'
 
 const oauth = Router()
 
+oauth.toString = () => '/oauth'
+
 oauth.use(cors())
 oauth.use(parser())
 
