@@ -1,3 +1,9 @@
+## 0.5.1 (Dic 18, 2022)
+
+- Parse callback URL
+- Authorize `redirect_uri` not required
+- Encoding `return_to` query param
+
 ## 0.5.0 (Dic 17, 2022)
 
 - Light theme redisign
