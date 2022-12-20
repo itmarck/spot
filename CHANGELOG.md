@@ -1,3 +1,7 @@
+## 0.5.3 (Dic 20, 2022)
+
+- Use code tag in endpoint path
+
 ## 0.5.2 (Dic 20, 2022)
 
 - Home page
