@@ -17,6 +17,9 @@ export function setup() {
 
     server.host = `${protocol}://${hostname}`
 
+    response.locals.links = links
+    response.locals.year = new Date().getFullYear()
+
     next()
   }
 }
@@ -27,6 +30,18 @@ export function host() {
 
 export const port = server.port || 3000
 export const version = process.env.npm_package_version
+
+export const links = {
+  creator: 'https://itmarck.com',
+  github: 'https://github.com/itmarck/spot',
+  pulls: 'https://github.com/itmarck/spot/pulls',
+  issues: 'https://github.com/itmarck/spot/issues',
+  home: '/',
+  account: '/account',
+  apps: '/account/applications',
+  documentation: '/docs',
+  oauth: 'https://oauth.net/2',
+}
 
 export const directories = {
   base: base,

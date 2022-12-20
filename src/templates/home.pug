@@ -1,9 +1,51 @@
 extends layout.pug
 
 block styles
+  link(rel='stylesheet' href='/static/home.css')
 
 block body
   include header.pug
 
-  main(content)
-    p Esta es la página de inicio
+  div(content banner center)
+    div
+      h1 Almacenamiento en la nube
+      div(subtitle) Guarda los datos del usuario de tu aplicación en la nube
+    br
+    a(href=links.documentation link target='_blank') Cómo empezar
+
+  div(content)
+    br
+    br
+    div(grid gap)
+      div(card center)
+        br
+        h3 Gratuito
+        span.material-symbols-outlined groups
+        div: span Puedes usar e integrar Spot dentro de tu aplicación sin costo alguno.
+        br
+      div(card center)
+        br
+        h3 Seguro
+        span.material-symbols-outlined key
+        div: span Protegido por <a href=#{links.oauth} link target='_blank' pointer>OAuth 2.0</a>, el estándar actual más seguro para una API REST.
+        br
+      div(card center)
+        br
+        h3 Código abierto
+        span.material-symbols-outlined code
+        div: span El código fuente está público en <a href=#{links.github} link target='_blank' pointer>GitHub</a> disponible para cualquier persona.
+        br
+    br
+    br
+    br
+    br
+    br
+    br
+    h2 Contribuir
+    p: span Para contribuir solo envía tu <a href=#{links.pulls} link target='_blank' pointer>PR</a> al repositorio del proyecto.
+    br
+    br
+    br
+    br
+    br
+    br

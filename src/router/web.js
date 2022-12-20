@@ -18,6 +18,7 @@ web.use(parser())
 web.get('/', withUser, async function (request, response) {
   response.render('home', {
     title: 'Bienvenido a Spot',
+    footer: true,
   })
 })
 
