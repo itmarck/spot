@@ -1,3 +1,8 @@
+## 0.5.2 (Dic 20, 2022)
+
+- Home page
+- Documentation page
+
 ## 0.5.1 (Dic 18, 2022)
 
 - Parse callback URL
