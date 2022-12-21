@@ -1,3 +1,8 @@
+## 0.5.4 (Dic 21, 2022)
+
+- Expiration for session cookie
+- Server host from environment
+
 ## 0.5.3 (Dic 20, 2022)
 
 - Use code tag in endpoint path
