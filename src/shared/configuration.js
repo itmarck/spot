@@ -15,7 +15,9 @@ export function setup() {
   return function (request, response, next) {
     const { protocol, hostname } = request
 
-    server.host = `${protocol}://${hostname}`
+    if (!server.host) {
+      server.host = `${protocol}://${hostname}`
+    }
 
     response.locals.links = links
     response.locals.year = new Date().getFullYear()
