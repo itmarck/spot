@@ -17,7 +17,23 @@ html {
   --border-soft: 1px solid var(--color-soft);
   --border-background: 1px solid var(--color-background);
 
+  --grid-columns: 1;
+  --content-size: 56rem;
+  --narrow-content-size: 24rem;
+
   font-size: var(--font-size);
+}
+
+@media (min-width: 28rem) {
+  html {
+    --grid-columns: 2;
+  }
+}
+
+@media (min-width: 42rem) {
+  html {
+    --grid-columns: 3;
+  }
 }
 
 /* Global styles */

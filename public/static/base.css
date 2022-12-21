@@ -50,11 +50,11 @@
 }
 
 [content] {
-  max-width: 56rem;
+  max-width: var(--content-size);
 }
 
 [narrow] {
-  max-width: 24rem;
+  max-width: var(--narrow-content-size);
 }
 
 [subtitle] {
@@ -73,11 +73,6 @@
 
 [link] {
   color: var(--color-primary);
-  cursor: default;
-}
-
-[link]:hover {
-  text-decoration: underline;
 }
 
 [normal] {
@@ -173,7 +168,7 @@ header {
 
 [grid] {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
 }
 
 [card] {
@@ -224,7 +219,7 @@ header {
   bottom: -1rem;
 }
 
-#version {
+[version] {
   right: 0;
   bottom: 0;
   color: var(--color-soft);
