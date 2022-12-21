@@ -5,7 +5,7 @@ import { parser } from '../middlewares/parser.js'
 import { CONTEXTS, KEYS } from '../shared/constants.js'
 import { sign } from '../shared/jwt.js'
 import { isEmail, sendMail } from '../shared/mail.js'
-import { canSendCode, isExpired } from '../shared/time.js'
+import { canSendCode, getNextYear, isExpired } from '../shared/time.js'
 
 const internal = Router()
 
@@ -73,7 +73,11 @@ internal.post('/session', async function (request, response) {
   }
 
   const internalToken = sign(CONTEXTS.internal, { uid: userId })
-  response.cookie(KEYS.internalToken, internalToken)
+
+  response.cookie(KEYS.internalToken, internalToken, {
+    expires: getNextYear(),
+  })
+
   response.redirect(returnTo)
 })
 

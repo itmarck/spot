@@ -3,11 +3,19 @@ import utc from 'dayjs/plugin/utc.js'
 
 dayjs.extend(utc)
 
-const expirationTime = 15
+const expirationTime = 60
 const timeToSendCode = 2
 
 function now() {
   return dayjs().utc()
+}
+
+/**
+ * Return the current day but one year later.
+ * @returns {Date}
+ */
+export function getNextYear() {
+  return now().add(1, 'year').toDate()
 }
 
 /**

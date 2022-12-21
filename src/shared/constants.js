@@ -13,7 +13,7 @@ export const KEYS = {
   /**
    * Spot web internal token.
    */
-  internalToken: 'swit',
+  internalToken: 'SWIT',
 }
 
 export const COLORS = {
