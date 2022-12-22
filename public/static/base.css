@@ -168,7 +168,7 @@ header {
 
 [grid] {
   display: grid;
-  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  grid-template-columns: var(--grid-columns);
 }
 
 [card] {
