@@ -1,6 +1,6 @@
 {
   "name": "spot",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Authentication service with basic storage",
   "type": "module",
   "keywords": [

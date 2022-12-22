@@ -1,3 +1,7 @@
+## 0.5.5 (Dic 22, 2022)
+
+- MySQL server migration
+
 ## 0.5.4 (Dic 21, 2022)
 
 - Expiration for session cookie
