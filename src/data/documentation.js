@@ -102,7 +102,7 @@ export const reference = {
       description:
         'Muestra el valor de un registro para el usuario autenticado en esa aplicación.',
       method: 'GET',
-      path: '/user',
+      path: '/record/{name}',
       params: null,
       response: {
         name: 'theme',
