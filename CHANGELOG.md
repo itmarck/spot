@@ -1,3 +1,7 @@
+## 0.5.6 (Jun 03, 2023)
+
+- Fix in docs
+
 ## 0.5.5 (Dic 22, 2022)
 
 - MySQL server migration
