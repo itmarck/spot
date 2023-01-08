@@ -102,7 +102,7 @@ export const reference = {
       description:
         'Muestra el valor de un registro para el usuario autenticado en esa aplicación.',
       method: 'GET',
-      path: '/record/{name}',
+      path: '/user/records/{name}',
       params: null,
       response: {
         name: 'theme',
@@ -115,7 +115,7 @@ export const reference = {
       description:
         'Guarda un registro dentro de los registros del usuario autenticado en esa aplicación.',
       method: 'POST',
-      path: '/record/{name}',
+      path: '/user/records/{name}',
       params: [
         {
           name: 'name',
@@ -141,7 +141,7 @@ export const reference = {
       description:
         'Elimina el registro de la lista de registros del usuario autenticado en esa aplicación.',
       method: 'DELETE',
-      path: '/record/{name}',
+      path: '/user/records/{name}',
       params: [
         {
           name: 'name',
