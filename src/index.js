@@ -23,4 +23,6 @@ server.use(`${oauth}`, oauth)
 server.use(`${internal}`, internal)
 server.use(`${web}`, web)
 
-server.listen(port)
+server.listen(port, function () {
+  console.info(`Listening on port ${port}`)
+})

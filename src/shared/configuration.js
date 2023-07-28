@@ -52,6 +52,7 @@ export const directories = {
 }
 
 export const database = {
+  uri: process.env.MONGODB_URI,
   name: process.env.MYSQLDATABASE,
   host: process.env.MYSQLHOST,
   port: process.env.MYSQLPORT,
