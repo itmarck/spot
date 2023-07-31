@@ -105,8 +105,12 @@ export const reference = {
       path: '/user/records/{name}',
       params: null,
       response: {
-        name: 'theme',
-        value: 'light',
+        name: 'styling',
+        type: 'object',
+        value: {
+          theme: 'dark',
+          font: 14,
+        },
       },
     },
     {
@@ -124,34 +128,34 @@ export const reference = {
           description: 'Nombre del registro.',
         },
         {
-          name: 'value',
-          type: 'any',
-          place: 'body',
-          description: 'Valor del registro.',
-        },
-      ],
-      response: {
-        name: 'theme',
-        value: 'dark',
-      },
-    },
-    {
-      id: 'delete-user-record',
-      title: 'Elimina un registro de un usuario',
-      description:
-        'Elimina el registro de la lista de registros del usuario autenticado en esa aplicación.',
-      method: 'DELETE',
-      path: '/user/records/{name}',
-      params: [
-        {
-          name: 'name',
+          name: 'type',
           type: 'string',
-          place: 'query',
-          description: 'Nombre del registro a eliminar.',
+          place: 'body',
+          description: 'Tipo de dato a registrar. Values: object (default), list.',
+        },
+        {
+          name: 'action',
+          type: 'string',
+          place: 'body',
+          description: 'Acción a realizar. Values: update (default), insert, delete.',
+        },
+        {
+          name: 'query',
+          type: 'object',
+          place: 'body',
+          description: 'Parámetros de MongoDB. Keys: filters, update.',
+        },
+        {
+          name: 'value',
+          type: 'object, array',
+          place: 'body',
+          description: 'Valor a insertar o actualizar. Keys: any.',
         },
       ],
       response: {
-        name: 'theme',
+        name: 'styling',
+        type: 'object',
+        message: 'Updated',
       },
     },
   ],
