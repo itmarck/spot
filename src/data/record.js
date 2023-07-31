@@ -1,16 +1,28 @@
-import { Record } from '../core/record.js'
 import { execute } from '../shared/database.js'
+import { findAll, findOne } from '../shared/mongo.js'
 
-async function getRecord(userId, applicationId, { name }) {
-  const query = `
-    SELECT * FROM record
-    WHERE user = '${userId}'
-    AND application = '${applicationId}'
-    AND name = '${name}'
-  `
-  const data = await execute(query, { as: 'object' })
+export async function getUserRecord(userId, applicationId, { name }) {
+  const user = await findOne({
+    database: 'spot',
+    collection: 'users',
+    query: { uid: userId },
+  })
 
-  return data && Record.fromJSON(data)
+  if (!user) return
+
+  const application = user.applications.find(item => item.aid === applicationId)
+  const records = application && application.records
+  const record = records && records[name]
+  const collection = record && record.collection
+  const type = record && record.type
+
+  if (!collection) return
+
+  const list = await findAll({ database: 'data', collection })
+
+  if (!list) return
+
+  return type === 'object' && list.length > 0 ? list[0] : list
 }
 
 /**
@@ -24,7 +36,7 @@ async function getRecord(userId, applicationId, { name }) {
  */
 export async function getRecords(userId, applicationId, { name } = {}) {
   if (name) {
-    return getRecord(userId, applicationId, { name })
+    return getUserRecord(userId, applicationId, { name })
   }
 
   const query = `
@@ -50,7 +62,7 @@ export async function getRecords(userId, applicationId, { name } = {}) {
  * @param {object} options.value Parsable record value in JSON.
  */
 export async function setRecord(userId, applicationId, { name, value }) {
-  const record = await getRecord(userId, applicationId, { name })
+  const record = await getUserRecord(userId, applicationId, { name })
   const recordId = record && record.id
   const parsedValue = value && JSON.stringify(value)
   const insertQuery = `
