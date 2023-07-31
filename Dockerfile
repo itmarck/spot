@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
+RUN npm install
 
 ENV NODE_ENV production
 
 EXPOSE 3001
 
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
