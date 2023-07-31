@@ -1,3 +1,8 @@
+## 1.0.0 (Jul 30, 2023)
+
+- MongoDB connection for records
+- Support for single document in MongoDB
+
 ## 0.5.7 (Jan 08, 2023)
 
 - Fix in docs
