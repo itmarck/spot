@@ -1,5 +1,4 @@
 import { v4 } from 'uuid'
-import { execute } from '../shared/database.js'
 import { findAll, findOne, update } from '../shared/mongo.js'
 
 export async function getUserRecord(userId, applicationId, { name }) {
@@ -97,23 +96,4 @@ export async function setUserRecord(userId, applicationId, { name, type, value, 
       default:
     }
   }
-}
-
-/**
- * Delete a record from the database. This action is irreversible.
- *
- * @param {number} userId User identifier.
- * @param {number} applicationId Application identifier.
- * @param {object} options
- * @param {string} options.name Record name to delete.
- */
-export async function deleteRecord(userId, applicationId, { name }) {
-  const query = `
-    DELETE FROM record
-    WHERE user = '${userId}'
-    AND application = '${applicationId}'
-    AND name = '${name}'
-  `
-
-  await execute(query)
 }

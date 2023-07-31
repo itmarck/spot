@@ -1,6 +1,6 @@
 import cors from 'cors'
 import { Router } from 'express'
-import { deleteRecord, getUserRecord, setUserRecord } from '../data/record.js'
+import { getUserRecord, setUserRecord } from '../data/record.js'
 import { getUser } from '../data/user.js'
 import { analyzer } from '../middlewares/analyzer.js'
 import { parser } from '../middlewares/parser.js'
@@ -45,20 +45,6 @@ api.post('/user/records/:name', async function (request, response) {
   await setUserRecord(uid, aid, { name, type, value, action })
 
   response.send({ name, value })
-})
-
-api.delete('/user/records/:name', async function (request, response) {
-  const { params: { name } = {}, payload } = request
-  const { uid, aid } = payload
-  const record = await getUserRecord(uid, aid, { name })
-
-  if (!record) {
-    return response.status(404).send()
-  }
-
-  await deleteRecord(uid, aid, { name })
-
-  response.send({ name })
 })
 
 export default api
