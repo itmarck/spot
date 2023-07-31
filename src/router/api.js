@@ -1,6 +1,6 @@
 import cors from 'cors'
 import { Router } from 'express'
-import { deleteRecord, getUserRecord, getRecords, setRecord } from '../data/record.js'
+import { deleteRecord, getUserRecord, setRecord } from '../data/record.js'
 import { getUser } from '../data/user.js'
 import { analyzer } from '../middlewares/analyzer.js'
 import { parser } from '../middlewares/parser.js'
@@ -23,17 +23,6 @@ api.get('/user', async function (request, response) {
   }
 
   response.send(user)
-})
-
-api.get('/user/records', async function (request, response) {
-  const { payload: { uid, aid } = {} } = request
-  const records = await getRecords(uid, aid)
-
-  if (!records) {
-    return response.status(404).send()
-  }
-
-  response.send(records)
 })
 
 api.get('/user/records/:name', async function (request, response) {
@@ -61,7 +50,7 @@ api.post('/user/records/:name', async function (request, response) {
 api.delete('/user/records/:name', async function (request, response) {
   const { params: { name } = {}, payload } = request
   const { uid, aid } = payload
-  const record = await getRecords(uid, aid, { name })
+  const record = await getUserRecord(uid, aid, { name })
 
   if (!record) {
     return response.status(404).send()

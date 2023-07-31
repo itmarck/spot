@@ -35,20 +35,7 @@ export async function getUserRecord(userId, applicationId, { name }) {
  * @param {string} options.name Record name to filter just one record.
  */
 export async function getRecords(userId, applicationId, { name } = {}) {
-  if (name) {
-    return getUserRecord(userId, applicationId, { name })
-  }
-
-  const query = `
-    SELECT name FROM record
-    WHERE user = '${userId}'
-    AND application = '${applicationId}'
-    ORDER BY name ASC
-  `
-  const data = await execute(query, { as: 'array' })
-  const mapper = ({ name }) => name
-
-  return data && data.map(mapper)
+  return
 }
 
 /**
