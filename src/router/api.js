@@ -1,6 +1,6 @@
 import cors from 'cors'
 import { Router } from 'express'
-import { deleteRecord, getUserRecord, setRecord } from '../data/record.js'
+import { deleteRecord, getUserRecord, setUserRecord } from '../data/record.js'
 import { getUser } from '../data/user.js'
 import { analyzer } from '../middlewares/analyzer.js'
 import { parser } from '../middlewares/parser.js'
@@ -40,9 +40,9 @@ api.get('/user/records/:name', async function (request, response) {
 api.post('/user/records/:name', async function (request, response) {
   const { params: { name } = {}, body = {}, payload } = request
   const { uid, aid } = payload
-  const { value } = body
+  const { type, value, action } = body
 
-  await setRecord(uid, aid, { name, value })
+  await setUserRecord(uid, aid, { name, type, value, action })
 
   response.send({ name, value })
 })

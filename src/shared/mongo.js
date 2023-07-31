@@ -26,3 +26,11 @@ export async function insert({ database, collection, data }) {
   await client.close()
   return response
 }
+
+export async function update({ database, collection, filters, data, options }) {
+  await client.connect()
+  const cursor = client.db(database).collection(collection)
+  const response = await cursor.updateOne(filters, data, options)
+  await client.close()
+  return response
+}

@@ -1,5 +1,6 @@
+import { v4 } from 'uuid'
 import { execute } from '../shared/database.js'
-import { findAll, findOne } from '../shared/mongo.js'
+import { findAll, findOne, update } from '../shared/mongo.js'
 
 export async function getUserRecord(userId, applicationId, { name }) {
   const user = await findOne({
@@ -48,22 +49,54 @@ export async function getRecords(userId, applicationId, { name } = {}) {
  * @param {string} options.name Record name where the value will be stored.
  * @param {object} options.value Parsable record value in JSON.
  */
-export async function setRecord(userId, applicationId, { name, value }) {
-  const record = await getUserRecord(userId, applicationId, { name })
-  const recordId = record && record.id
-  const parsedValue = value && JSON.stringify(value)
-  const insertQuery = `
-    INSERT INTO record (name, value, user, application)
-    VALUES ('${name}', '${parsedValue}', '${userId}', '${applicationId}')
-  `
-  const updateQuery = `
-    UPDATE record
-    SET value = '${parsedValue}'
-    WHERE id = '${recordId}'
-  `
-  const query = recordId ? updateQuery : insertQuery
+export async function setUserRecord(userId, applicationId, { name, type, value, action }) {
+  const user = await findOne({
+    database: 'spot',
+    collection: 'users',
+    query: { uid: userId },
+  })
 
-  await execute(query)
+  if (!user) return
+
+  const applications = user.applications || []
+  const application = applications.find(item => item.aid === applicationId)
+  const records = application && application.records || {}
+  const record = records && records[name]
+  const collection = record && record.collection || v4()
+
+  await update({
+    database: 'spot',
+    collection: 'users',
+    filters: {
+      _id: user._id,
+      applications: { $elemMatch: { aid: applicationId } },
+    },
+    data: {
+      $set: {
+        [`applications.$.records.${name}`]: {
+          collection,
+          type: record && record.type || type,
+        },
+      }
+    }
+  })
+
+  if (type === 'object') {
+    switch (action) {
+      default:
+        await update({
+          database: 'data',
+          collection: collection,
+          filters: { _type: 'object' },
+          data: { $set: { ...value } },
+          options: { upsert: true },
+        })
+    }
+  } else if (type === 'list') {
+    switch (action) {
+      default:
+    }
+  }
 }
 
 /**
