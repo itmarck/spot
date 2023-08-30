@@ -23,7 +23,7 @@ export class UserController extends Controller {
 
   async getUser(request, response) {
     const user = await this.userService.getUser({
-      userId: '2',
+      userId: '10',
     })
     response.send(user)
   }

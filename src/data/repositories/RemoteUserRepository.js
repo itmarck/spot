@@ -1,8 +1,7 @@
 // @ts-check
 
-import { Record } from '../../core/common/Record.js'
-import { User } from '../../core/users/User.js'
-import { UserRepository } from '../../core/users/UserRepository.js'
+import { Record, User, UserRepository } from '../../core/index.js'
+import { knex } from '../../shared/knex.js'
 
 export class RemoteUserRepository extends UserRepository {
   constructor() {
@@ -15,11 +14,18 @@ export class RemoteUserRepository extends UserRepository {
    * @returns {Promise<User>}
    */
   async findUser({ userId }) {
+    const query = knex('user').where('id', userId).first()
+    const user = await query.then()
+
+    if (!user) {
+      throw new Error(`User not found ${userId}`)
+    }
+
     return new User({
-      id: userId,
-      email: 'email',
-      name: 'name',
-      avatar: 'avatar',
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      avatar: user.avatar,
     })
   }
 

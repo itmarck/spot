@@ -1,5 +1,7 @@
 import cors from 'cors'
 import { Router } from 'express'
+import { UserController } from '../app/rest/UserController.js'
+import { forge } from '../container.js'
 import { getUserRecord, setUserRecord } from '../data/record.js'
 import { getUser } from '../data/user.js'
 import { analyzer } from '../middlewares/analyzer.js'
@@ -7,12 +9,20 @@ import { parser } from '../middlewares/parser.js'
 import { CONTEXTS } from '../shared/constants.js'
 
 const api = Router()
+const container = forge()
+
+/**
+ * @type {UserController}
+ */
+const controller = container.get(UserController)
 
 api.toString = () => '/api/v1'
 
 api.use(cors())
 api.use(parser({ from: CONTEXTS.api }))
 api.use(analyzer({ context: CONTEXTS.api, access: true }))
+
+api.get('/user', controller.getUser)
 
 api.get('/user', async function (request, response) {
   const { payload: { uid } = {} } = request
