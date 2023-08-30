@@ -1,7 +1,7 @@
 // @ts-check
 
 import setup from 'knex'
-import { database } from './configuration.js'
+import { database } from '../configuration.js'
 
 export const knex = setup({
   client: 'mysql2',

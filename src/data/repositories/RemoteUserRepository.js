@@ -1,7 +1,7 @@
 // @ts-check
 
-import { Record, User, UserRepository } from '../../core/index.js'
-import { knex } from '../../shared/knex.js'
+import { Record, User, UserRepository } from '#core/index.js'
+import { knex } from '#shared/vendors/knex.js'
 
 export class RemoteUserRepository extends UserRepository {
   constructor() {
