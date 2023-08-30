@@ -11,6 +11,9 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
+  "imports": {
+    "#*": "./src/*"
+  },
   "dependencies": {
     "axios": "^1.2.1",
     "cookie-parser": "^1.4.6",
