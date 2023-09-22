@@ -12,21 +12,22 @@ export class UserService {
    * @private
    * @type {UserRepository}
    */
-  userRepository
+  repository
 
   /**
-   * @param {UserRepository} userRepository
+   * @param {UserRepository} userRepository User repository
    */
   constructor(userRepository) {
-    this.userRepository = userRepository
+    this.repository = userRepository
   }
+
   /**
    * @param {object} options
-   * @param {string} options.userId
+   * @param {string} options.userId User identifier
    * @returns {Promise<User>}
    */
   async getUser({ userId }) {
-    return await this.userRepository.findUser({
+    return await this.repository.findUser({
       userId: userId,
     })
   }
@@ -39,7 +40,7 @@ export class UserService {
    * @returns {Promise<Record>}
    */
   async getUserRecord({ name, userId, applicationId }) {
-    return await this.userRepository.findRecord({
+    return await this.repository.findRecord({
       name: name,
       userId: userId,
       applicationId: applicationId,
