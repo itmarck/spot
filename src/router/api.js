@@ -10,10 +10,6 @@ import { CONTEXTS } from '../shared/constants.js'
 
 const api = Router()
 const container = forge()
-
-/**
- * @type {UserController}
- */
 const controller = container.get(UserController)
 
 api.toString = () => '/api/v1'

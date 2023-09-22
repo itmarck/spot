@@ -1,6 +1,8 @@
 // @ts-check
 
 /**
+ * @typedef {import('express').Request} Request
+ * @typedef {import('express').Response} Response
  * @typedef {import('../../core/users/UserService').UserService} UserService
  */
 
@@ -21,9 +23,18 @@ export class UserController extends Controller {
     this.userService = userService
   }
 
+  /**
+   * @typedef {object} Payload
+   * @property {string} userId
+   */
+
+  /**
+   * @param {Request & Payload} request
+   * @param {Response} response
+   */
   async getUser(request, response) {
     const user = await this.userService.getUser({
-      userId: '10',
+      userId: request.userId,
     })
     response.send(user)
   }
