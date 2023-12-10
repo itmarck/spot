@@ -1,4 +1,3 @@
-import { host } from '../shared/configuration.js'
 import { difference } from '../shared/time.js'
 
 export class Application {
@@ -27,17 +26,6 @@ export class Application {
   }
 
   static fromJSON(json) {
-    const hostname = host()
-    const avatar = json['avatar']
-    const ownerAvatar = json['owner_avatar']
-
-    if (avatar && avatar.startsWith('/')) {
-      json.avatar = `${hostname}${avatar}`
-    }
-    if (ownerAvatar && ownerAvatar.startsWith('/')) {
-      json.owner_avatar = `${hostname}${ownerAvatar}`
-    }
-
     return new Application({
       id: json['id'],
       owner: {
